@@ -50,7 +50,7 @@ public interface IBaseService<T> extends IService<T> {
 
     void delete(Serializable id);
 
-    boolean beforeDelete(Serializable id);
+    void beforeDelete(Serializable id, CheckEntityResult checkEntityResult);
 
     void afterDelete(Serializable id);
 

@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -13,15 +14,19 @@ import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.web.exception.CheckEntityException;
 import io.github.tr.common.web.service.IBaseService;
 import io.github.tr.common.web.utils.CheckEntityResult;
+import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements IBaseService<T> {
 
     @Autowired
@@ -65,81 +70,87 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     }
 
     @Override
+    @SneakyThrows
+    @Transactional
     public T saveEntity(Map<String, Object> entity) {
         // 获取实体类类型
-//        Class<T> entityType = getEntityType();
-        Class<?> entityType = ClassUtil.getTypeArgument(this.getClass(), 1);
-//        Class<T> entityType = (Class<T>) ReflectUtil.getEntityType(this.getClass(), 1);
-        if (entityType == null) throw new NullPointerException("获取实体类类型异常！");
-//        Object instance = entityType.getDeclaredConstructor().newInstance();
-//        beanUtilsBean.populate(instance, entity);
-//        saveEntity(instance);
-//        return instance;
-        return null;
-    }
-
-    @Override
-    public void beforeUpdate(T entity, Serializable id, CheckEntityResult checkEntityResult) {
-
-    }
-
-    @Override
-    public CheckEntityResult beforeInsert(T entity, CheckEntityResult checkEntityResult) {
-        return null;
-    }
-
-    @Override
-    public void afterUpdate(T entity) {
-
-    }
-
-    @Override
-    public void afterInsert(T entity) {
-
+        Class<T> entityType = (Class<T>) ClassUtil.getTypeArgument(this.getClass(), 1);
+        Assert.notNull(entityType);
+        T instance = entityType.getDeclaredConstructor().newInstance();
+        Assert.notNull(instance);
+        beanUtilsBean.populate(instance, entity);
+        saveEntity(instance);
+        return instance;
     }
 
     @Override
     public IPage<?> query(QueryParams<Map<String, Object>> queryParams) {
-        return null;
-    }
-
-    @Override
-    public IPage<?> queryMapper(Page<T> page, Map<String, Object> p) {
-        return null;
+        // 获取查询参数
+        Map<String, Object> p = queryParams.getFilter();
+        int pageIndex = queryParams.getPageIndex();
+        int pageSize = queryParams.getPageSize();
+        Page<T> page = new Page<>();
+        page.setCurrent(pageIndex);
+        page.setSize(pageSize);
+        return this.queryMapper(page, p);
     }
 
     @Override
     public Object get(Serializable id) {
-        return null;
+        T t = this.getById(id);
+        return getOneCommon(t);
     }
 
-    @Override
-    public Object extensionOne(T t) {
-        return null;
-    }
 
     @Override
     public Object getByFilter(Map<String, Object> queryParams) {
-        return null;
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryParams.forEach(queryWrapper::eq);
+        T t = this.getOne(queryWrapper);
+        return getOneCommon(t);
     }
 
     @Override
     public void delete(Serializable id) {
-
+        CheckEntityResult checkRes = new CheckEntityResult();
+        this.beforeDelete(id, checkRes);
+        // 进行删除前校验
+        if (checkRes.passed()) {
+            this.removeById(id);
+            this.afterDelete(id);
+        } else {
+            throw new CheckEntityException(checkRes);
+        }
     }
 
     @Override
-    public boolean beforeDelete(Serializable id) {
-        return false;
-    }
-
-    @Override
-    public void afterDelete(Serializable id) {
-
-    }
-
-    @Override
+    @Transactional
     public void deleteBatch(List<Serializable> ids) {
+        List<Serializable> realIds = new ArrayList<>();
+        ids.forEach(id -> {
+            CheckEntityResult checkRes = new CheckEntityResult();
+            this.beforeDelete(id, checkRes);
+            if (checkRes.passed()) {
+                if (id instanceof Integer) {
+                    Long _id = Long.valueOf(id.toString());
+                    realIds.add(_id);
+                } else {
+                    realIds.add(id);
+                }
+            }
+        });
+        if (!realIds.isEmpty()) {
+            this.removeBatchByIds(realIds);
+        }
+        realIds.forEach(this::afterDelete);
+    }
 
+    private Object getOneCommon(T t) {
+        // 进行扩展处理
+        Object res = this.extensionOne(t);
+        if (res == null) {
+            return t;
+        }
+        return res;
     }
 }
