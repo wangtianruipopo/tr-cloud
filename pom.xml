@@ -12,6 +12,7 @@
     <modules>
         <module>tr-core</module>
         <module>tr-common</module>
+        <module>tr-dependencies</module>
     </modules>
 
     <properties>
@@ -111,6 +112,14 @@
                 <version>${easyexcel.version}</version>
             </dependency>
             <!-- Office 办公软件 相关依赖结束 -->
+            <!-- 自身依赖 -->
+            <dependency>
+                <groupId>io.github.tr</groupId>
+                <artifactId>tr-dependencies</artifactId>
+                <version>${tr-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
