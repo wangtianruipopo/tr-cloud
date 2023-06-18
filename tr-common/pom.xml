@@ -10,6 +10,9 @@
 
     <modules>
         <module>tr-common-base</module>
+        <module>tr-common-web</module>
+        <module>tr-common-alibaba</module>
+        <module>tr-common-mysql</module>
     </modules>
 
     <artifactId>tr-common</artifactId>
