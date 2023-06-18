@@ -69,6 +69,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     @SneakyThrows
     @Transactional
     public T saveEntity(Map<String, Object> entity) {
