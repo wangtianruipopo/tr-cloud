@@ -10,6 +10,7 @@
     <artifactId>tr-common-alibaba</artifactId>
     <name>tr-common-alibaba</name>
     <description>tr-common-alibaba</description>
+    <packaging>pom</packaging>
 
     <dependencies>
         <!-- 注册中心 & 配置中心 开始 -->
