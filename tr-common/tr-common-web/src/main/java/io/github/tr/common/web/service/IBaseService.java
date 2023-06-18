@@ -32,11 +32,15 @@ public interface IBaseService<T> extends IService<T> {
      * @param entity 插入对象
      * @param checkEntityResult 校验结果
      */
-    CheckEntityResult beforeInsert(T entity, CheckEntityResult checkEntityResult);
+    void beforeInsert(T entity, CheckEntityResult checkEntityResult);
 
     void afterUpdate(T entity);
 
     void afterInsert(T entity);
+
+    void beforeDelete(Serializable id, CheckEntityResult checkEntityResult);
+
+    void afterDelete(Serializable id);
 
     IPage<?> query(QueryParams<Map<String, Object>> queryParams);
 
@@ -49,10 +53,6 @@ public interface IBaseService<T> extends IService<T> {
     Object getByFilter(Map<String, Object> queryParams);
 
     void delete(Serializable id);
-
-    void beforeDelete(Serializable id, CheckEntityResult checkEntityResult);
-
-    void afterDelete(Serializable id);
 
     void deleteBatch(List<Serializable> ids);
 
