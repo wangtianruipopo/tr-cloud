@@ -3,8 +3,8 @@ package io.github.tr.common.web.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.github.tr.common.base.exception.CheckEntityResult;
 import io.github.tr.common.base.query.QueryParams;
-import io.github.tr.common.web.utils.CheckEntityResult;
 
 import java.io.Serializable;
 import java.util.List;

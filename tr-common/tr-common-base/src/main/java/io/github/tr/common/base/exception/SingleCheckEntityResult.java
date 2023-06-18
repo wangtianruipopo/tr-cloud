@@ -1,4 +1,4 @@
-package io.github.tr.common.web.utils;
+package io.github.tr.common.base.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

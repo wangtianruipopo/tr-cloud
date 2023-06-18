@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor;
 
 import java.io.IOException;
 
@@ -40,7 +39,6 @@ public class HttpEndpointUtil implements ApplicationContextAware {
      * @param responseData /
      * @param outputMessage /
      * @throws IOException /
-     * @see AbstractMessageConverterMethodProcessor AbstractMessageConverterMethodProcessor#writeWithMessageConverters
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> void writeWithMessageConverters(T responseData, ServletServerHttpResponse outputMessage) throws IOException {

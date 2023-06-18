@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.tr.common.web.exception;
+package io.github.tr.common.web.config;
 
+import io.github.tr.common.base.exception.CheckEntityException;
+import io.github.tr.common.base.exception.SingleCheckEntityResult;
 import io.github.tr.common.base.http.HttpResult;
-import io.github.tr.common.web.utils.SingleCheckEntityResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

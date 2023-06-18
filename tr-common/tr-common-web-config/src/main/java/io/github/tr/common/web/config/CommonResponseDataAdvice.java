@@ -22,7 +22,7 @@ import java.util.Objects;
  * @since 1.0
  * @version 1.0
  */
-@RestControllerAdvice(value = "com.lms")
+@RestControllerAdvice(value = "com.harmonic")
 @Slf4j
 public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
     /**

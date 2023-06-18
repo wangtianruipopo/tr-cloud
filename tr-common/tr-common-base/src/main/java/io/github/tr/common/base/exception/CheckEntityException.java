@@ -1,7 +1,5 @@
-package io.github.tr.common.web.exception;
+package io.github.tr.common.base.exception;
 
-import io.github.tr.common.web.utils.CheckEntityResult;
-import io.github.tr.common.web.utils.SingleCheckEntityResult;
 import lombok.Getter;
 
 import java.util.List;

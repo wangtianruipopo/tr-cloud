@@ -4,7 +4,7 @@ import cn.hutool.core.util.ClassUtil;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.github.tr.common.web.utils.CheckEntityResult;
+import io.github.tr.common.base.exception.CheckEntityResult;
 import lombok.SneakyThrows;
 
 import java.io.Serializable;

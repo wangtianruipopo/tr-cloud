@@ -1,9 +1,9 @@
 package io.github.tr.common.web.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.tr.common.base.exception.CheckEntityResult;
 import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.web.service.IBaseService;
-import io.github.tr.common.web.utils.CheckEntityResult;
 import io.github.tr.common.web.utils.ModelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
     protected HttpServletResponse response;
 
     @PostMapping("/beforeSaveCheck")
-    public CheckEntityResult beforeSaveCheck( @RequestBody T entity) {
+    public CheckEntityResult beforeSaveCheck(@RequestBody T entity) {
         Serializable key = ModelUtil.getKey(entity);
         CheckEntityResult result = new CheckEntityResult();
         if (key != null) {

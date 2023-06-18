@@ -11,6 +11,7 @@
     <modules>
         <module>tr-common-base</module>
         <module>tr-common-web</module>
+        <module>tr-common-web-config</module>
         <module>tr-common-alibaba</module>
         <module>tr-common-mysql</module>
     </modules>
@@ -19,5 +20,15 @@
     <name>tr-common</name>
     <description>tr-common</description>
     <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

@@ -24,7 +24,17 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.tr</groupId>
+				<artifactId>tr-common-web-config</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.tr</groupId>
 				<artifactId>tr-common-alibaba</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.tr</groupId>
+				<artifactId>tr-common-mysql</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
