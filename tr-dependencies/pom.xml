@@ -10,6 +10,25 @@
 	<description>tr-dependencies</description>
 	<packaging>pom</packaging>
 
+	<properties>
+		<java.version>8</java.version>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tr-cloud.version>1.0</tr-cloud.version>
+		<spring-boot.version>2.7.9</spring-boot.version>
+		<spring-cloud.version>2021.0.6</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+		<hutool.version>5.8.19</hutool.version>
+		<mysql.version>8.0.33</mysql.version>
+		<druid.version>1.2.18</druid.version>
+		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+		<fastjson2.version>2.0.33</fastjson2.version>
+		<lombok.version>1.18.28</lombok.version>
+		<easyexcel.version>3.3.2</easyexcel.version>
+		<swagger.version>3.0.3</swagger.version>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -36,6 +55,32 @@
 				<groupId>io.github.tr</groupId>
 				<artifactId>tr-common-mysql</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<!-- Spring Boot 相关依赖开始 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Spring Boot 相关依赖结束 -->
+			<!-- Spring Cloud 相关依赖开始 -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Spring Cloud 相关依赖结束 -->
+			<!-- Spring Cloud & Alibaba 相关依赖开始 -->
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

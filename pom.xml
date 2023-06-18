@@ -31,6 +31,7 @@
         <fastjson2.version>2.0.33</fastjson2.version>
         <lombok.version>1.18.28</lombok.version>
         <easyexcel.version>3.3.2</easyexcel.version>
+        <swagger.version>3.0.3</swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -112,6 +113,13 @@
                 <version>${easyexcel.version}</version>
             </dependency>
             <!-- Office 办公软件 相关依赖结束 -->
+            <!-- swagger 文档生成 开始 swagger-ui http://localhost:8080/doc.htm -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- swagger 文档生成 结束 -->
             <!-- 自身依赖 -->
             <dependency>
                 <groupId>io.github.tr</groupId>
@@ -122,5 +130,18 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+    </dependencies>
 </project>

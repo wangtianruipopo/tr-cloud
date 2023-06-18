@@ -19,7 +19,7 @@ public class CheckEntityResult {
         this.result.add(singleCheckEntityResult);
     }
 
-    public boolean passed() {
+    public boolean isPassed() {
         return this.result.isEmpty();
     }
 }

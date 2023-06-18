@@ -40,7 +40,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         } else {
             this.beforeInsert(entity, checkRes);
         }
-        if (checkRes.passed()) {
+        if (checkRes.isPassed()) {
             // 校验通过
             this.saveOrUpdate(entity);
             if (key != null) {
@@ -101,7 +101,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         CheckEntityResult checkRes = new CheckEntityResult();
         this.beforeDelete(id, checkRes);
         // 进行删除前校验
-        if (checkRes.passed()) {
+        if (checkRes.isPassed()) {
             this.removeById(id);
             this.afterDelete(id);
         } else {
@@ -116,7 +116,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         ids.forEach(id -> {
             CheckEntityResult checkRes = new CheckEntityResult();
             this.beforeDelete(id, checkRes);
-            if (checkRes.passed()) {
+            if (checkRes.isPassed()) {
                 if (id instanceof Integer) {
                     Long _id = Long.valueOf(id.toString());
                     realIds.add(_id);
