@@ -17,6 +17,16 @@
 				<artifactId>tr-common-base</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.github.tr</groupId>
+				<artifactId>tr-common-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.tr</groupId>
+				<artifactId>tr-common-alibaba</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

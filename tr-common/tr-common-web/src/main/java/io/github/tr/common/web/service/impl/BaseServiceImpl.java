@@ -14,6 +14,7 @@ import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.web.exception.CheckEntityException;
 import io.github.tr.common.web.service.IBaseService;
 import io.github.tr.common.web.utils.CheckEntityResult;
+import io.github.tr.common.web.utils.ModelUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,18 +37,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     @Override
     @Transactional
     public void saveEntity(T entity) {
-        Serializable key = null;
-        if (entity instanceof Model<?>) {
-            Model<?> model = (Model<?>) entity;
-            key = model.pkVal();
-        } else {
-            // 去判断是否有注解
-            Field[] fields = ReflectUtil.getFields(entity.getClass(), f -> f.getAnnotation(TableId.class) != null);
-            Assert.notNull(fields);
-            if (fields.length == 1) {
-                key = (Serializable) ReflectUtil.getFieldValue(entity, fields[0]);
-            }
-        }
+        Serializable key = ModelUtil.getKey(entity);
         CheckEntityResult checkRes = new CheckEntityResult();
         if (key != null) {
             this.beforeUpdate(entity, key, checkRes);
