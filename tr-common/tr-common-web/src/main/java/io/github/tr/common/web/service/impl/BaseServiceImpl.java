@@ -42,7 +42,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
             key = model.pkVal();
         } else {
             // 去判断是否有注解
-            TableId tableId = entity.getClass().getAnnotation(TableId.class);
             Field[] fields = ReflectUtil.getFields(entity.getClass(), f -> f.getAnnotation(TableId.class) != null);
             Assert.notNull(fields);
             if (fields.length == 1) {
