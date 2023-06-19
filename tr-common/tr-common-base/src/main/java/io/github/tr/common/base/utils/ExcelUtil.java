@@ -48,7 +48,7 @@ public class ExcelUtil {
                 assert fields != null;
                 List<List<String>> head = getCustomHead(fields);
                 excelwriterbuilder = EasyExcel.write(outputStream).head(head);
-                excelwriterbuilder.registerWriteHandler(new DynamicExcelHandler<>(exportType, fields));
+                excelwriterbuilder.registerWriteHandler(new DynamicExcelHandler(fields));
             } else {
                 excelwriterbuilder = EasyExcel.write(outputStream, exportType);
             }
@@ -90,9 +90,9 @@ public class ExcelUtil {
 
     private void writeSheet(List<?> data, List<Field> fields, ExcelWriter excelWriter, WriteSheet writeSheet) {
         if (isCustomHead()) {
-            List<List<String>> dataList = new ArrayList<>();
+            List<List<Object>> dataList = new ArrayList<>();
             data.forEach(item -> {
-                List<String> itemList = new ArrayList<>();
+                List<Object> itemList = new ArrayList<>();
                 assert fields != null;
                 fields.forEach(f -> {
                     try {
@@ -105,7 +105,7 @@ public class ExcelUtil {
                                 String text = StringExcelConverter.getText((String) value, f);
                                 itemList.add(text);
                             } else {
-                                itemList.add(value.toString());
+                                itemList.add(value);
                             }
                         } else {
                             itemList.add(null);

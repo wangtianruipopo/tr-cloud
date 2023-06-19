@@ -8,13 +8,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class DynamicExcelHandler<T> implements SheetWriteHandler {
+public class DynamicExcelHandler implements SheetWriteHandler {
 
-    private Class<T> clazz;
-    private List<Field> fields;
+    private final List<Field> fields;
 
-    public DynamicExcelHandler(Class<T> clazz, List<Field> fields) {
-        this.clazz = clazz;
+    public DynamicExcelHandler(List<Field> fields) {
         this.fields = fields;
     }
 
