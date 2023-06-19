@@ -33,7 +33,7 @@ public class ExcelUtil {
     private OutputStream outputStream;
     private QueryParams<Map<String, Object>> params;
     private Class<?> exportType;
-    private QueryFunction<?> queryFunction;
+    private QueryFunction queryFunction;
     private String sheetName;
     private Collection<WriteHandler> writeHandler;
     private Collection<Integer> columnsByIndex;
@@ -58,49 +58,25 @@ public class ExcelUtil {
                 }
             }
             excelWriter = excelwriterbuilder.build();
-            // 循环获取数据，支持分页，每页最大展示10万条数据
-            params.setPageSize(100000);
-            int index = 1;
-            while (true) {
-                params.setPageIndex(params.getPageIndex() + 1);
+            // 如果pageIndex和pageSize任意一个包含-1，则表示导出全部页
+            if (params.getPageIndex() == -1 || params.getPageSize() == -1) {
+                params.setPageSize(100000);
+                int index = 0;
+                while (true) {
+                    params.setPageIndex(params.getPageIndex() + index);
+                    List<?> data = queryFunction.data(params);
+                    if (data == null || data.isEmpty()) {
+                        break;
+                    }
+                    String sheetName = this.sheetName + (index + 1);
+                    WriteSheet writeSheet = EasyExcel.writerSheet(index++, sheetName).build();
+                    writeSheet(data, fields, excelWriter, writeSheet);
+                }
+            } else {
+                // 导出当前页
                 List<?> data = queryFunction.data(params);
-                if (data == null || data.isEmpty()) {
-                    break;
-                }
-                String sheetName = this.sheetName + index++;
-                WriteSheet writeSheet = EasyExcel.writerSheet(index, sheetName).build();
-                if (isCustomHead()) {
-                    List<List<String>> dataList = new ArrayList<>();
-                    data.forEach(item -> {
-                        List<String> itemList = new ArrayList<>();
-                        assert fields != null;
-                        fields.forEach(f -> {
-                            try {
-                                Object value = io.github.tr.common.base.utils.ReflectUtil.getValueByMethod(item, f);
-                                if (value != null) {
-                                    // 获取converter属性
-                                    ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
-                                    Class<? extends Converter<?>> converter = excelProperty.converter();
-                                    if (converter != null && !converter.equals(AutoConverter.class)) {
-                                        String text = StringExcelConverter.getText((String) value, f);
-                                        itemList.add(text);
-                                    } else {
-                                        itemList.add(value.toString());
-                                    }
-                                } else {
-                                    itemList.add("");
-                                }
-
-                            } catch (Exception e) {
-                                log.error("导出异常！", e);
-                            }
-                        });
-                        dataList.add(itemList);
-                    });
-                    excelWriter.write(dataList, writeSheet);
-                } else {
-                    excelWriter.write(data, writeSheet);
-                }
+                WriteSheet writeSheet = EasyExcel.writerSheet(0, this.sheetName).build();
+                writeSheet(data, fields, excelWriter, writeSheet);
             }
         } catch (Exception e) {
             log.error("导出EXCEL失败", e);
@@ -110,6 +86,41 @@ public class ExcelUtil {
             }
         }
 
+    }
+
+    private void writeSheet(List<?> data, List<Field> fields, ExcelWriter excelWriter, WriteSheet writeSheet) {
+        if (isCustomHead()) {
+            List<List<String>> dataList = new ArrayList<>();
+            data.forEach(item -> {
+                List<String> itemList = new ArrayList<>();
+                assert fields != null;
+                fields.forEach(f -> {
+                    try {
+                        Object value = io.github.tr.common.base.utils.ReflectUtil.getValueByMethod(item, f);
+                        if (value != null) {
+                            // 获取converter属性
+                            ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
+                            Class<? extends Converter<?>> converter = excelProperty.converter();
+                            if (converter != null && !converter.equals(AutoConverter.class)) {
+                                String text = StringExcelConverter.getText((String) value, f);
+                                itemList.add(text);
+                            } else {
+                                itemList.add(value.toString());
+                            }
+                        } else {
+                            itemList.add(null);
+                        }
+
+                    } catch (Exception e) {
+                        log.error("导出异常！", e);
+                    }
+                });
+                dataList.add(itemList);
+            });
+            excelWriter.write(dataList, writeSheet);
+        } else {
+            excelWriter.write(data, writeSheet);
+        }
     }
 
     private boolean isIndex() {

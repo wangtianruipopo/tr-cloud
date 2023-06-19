@@ -82,6 +82,69 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- Spring Cloud & Alibaba 相关依赖结束 -->
+			<!-- 常用工具包 相关依赖开始 -->
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+			<!-- 常用工具包 相关依赖结束 -->
+			<!-- 数据库 相关依赖开始 -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-annotation</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<!-- 数据库 相关依赖结束 -->
+			<!-- JSON 序列化 相关依赖开始 -->
+			<dependency>
+				<groupId>com.alibaba.fastjson2</groupId>
+				<artifactId>fastjson2-extension-spring6</artifactId>
+				<version>${fastjson2.version}</version>
+			</dependency>
+			<!-- JSON 序列化 相关依赖结束 -->
+			<!-- lombok 插件开始 -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<!-- lombok 插件结束 -->
+			<!-- Office 办公软件 相关依赖开始 -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>easyexcel</artifactId>
+				<version>${easyexcel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>easyexcel.core</artifactId>
+				<version>${easyexcel.version}</version>
+			</dependency>
+			<!-- Office 办公软件 相关依赖结束 -->
+			<!-- swagger 文档生成 开始 swagger-ui http://localhost:8080/doc.htm -->
+			<dependency>
+				<groupId>com.github.xiaoymin</groupId>
+				<artifactId>knife4j-spring-boot-starter</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<!-- swagger 文档生成 结束 -->
 		</dependencies>
 	</dependencyManagement>
 </project>

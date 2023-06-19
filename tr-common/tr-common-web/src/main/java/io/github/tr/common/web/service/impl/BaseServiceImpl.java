@@ -31,7 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements IBaseService<T> {
@@ -159,11 +162,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         writeHandlerList.add(styleStrategy);
         ExcelUtil.ExcelUtilBuilder builder = ExcelUtil.builder();
         builder.sheetName(sheetName).exportType(entityType).params(queryParams)
-            .outputStream(response.getOutputStream()).queryFunction(p -> {
-                IPage<?> result = this.query(p);
-                List<?> records = result.getRecords();
-                return Collections.singletonList(records);
-            });
+            .outputStream(response.getOutputStream()).queryFunction(p -> this.query(p).getRecords());
         if (this instanceof IBaseExcelHandler) {
             IBaseExcelHandler handler = (IBaseExcelHandler) this;
             Collection<Integer> columnsByIndex = handler.columnsByIndex(queryParams);
@@ -174,8 +173,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         }
         builder.writeHandler(writeHandlerList);
         ExcelUtil excelUtil = builder.build();
-        excelUtil.export();
         DownloadUtil.downExcel(response, fileName);
+        excelUtil.export();
     }
 
     private Object getOneCommon(T t) {
