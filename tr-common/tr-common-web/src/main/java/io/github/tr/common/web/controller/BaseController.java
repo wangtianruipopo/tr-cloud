@@ -76,9 +76,7 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
     @Operation(summary = "导出查询结果为excel")
     @PostMapping("/exportExcel")
     public void exportExcel(@RequestBody QueryParams<Map<String, Object>> queryParams) {
-//        this.baseService.exportExcel(queryParams, response);
-        // TODO
-        System.out.println(queryParams);
+        this.baseService.exportExcel(queryParams, response);
     }
 
 }

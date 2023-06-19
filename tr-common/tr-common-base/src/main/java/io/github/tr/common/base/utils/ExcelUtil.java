@@ -29,14 +29,13 @@ import java.util.*;
 @Data
 @Builder
 @Slf4j
-public class ExcelUtil<T> {
+public class ExcelUtil {
     private OutputStream outputStream;
-    private QueryParams<?> params;
-    private Class<T> clazz;
-    private QueryFunction<T> queryFunction;
-    private String fileName;
+    private QueryParams<Map<String, Object>> params;
+    private Class<?> exportType;
+    private QueryFunction<?> queryFunction;
     private String sheetName;
-    private List<WriteHandler> writeHandler;
+    private Collection<WriteHandler> writeHandler;
     private Collection<Integer> columnsByIndex;
     private Collection<String> columnsByName;
 
@@ -49,9 +48,9 @@ public class ExcelUtil<T> {
                 assert fields != null;
                 List<List<String>> head = getCustomHead(fields);
                 excelwriterbuilder = EasyExcel.write(outputStream).head(head);
-                excelwriterbuilder.registerWriteHandler(new DynamicExcelHandler<>(clazz, fields));
+                excelwriterbuilder.registerWriteHandler(new DynamicExcelHandler<>(exportType, fields));
             } else {
-                excelwriterbuilder = EasyExcel.write(outputStream, clazz);
+                excelwriterbuilder = EasyExcel.write(outputStream, exportType);
             }
             if (writeHandler != null && !writeHandler.isEmpty()) {
                 for (WriteHandler writeHandler : writeHandler) {
@@ -64,7 +63,7 @@ public class ExcelUtil<T> {
             int index = 1;
             while (true) {
                 params.setPageIndex(params.getPageIndex() + 1);
-                List<T> data = queryFunction.data(params);
+                List<?> data = queryFunction.data(params);
                 if (data == null || data.isEmpty()) {
                     break;
                 }
@@ -132,7 +131,7 @@ public class ExcelUtil<T> {
             return null;
         }
         // 先将实体类的所有excel字段取出
-        Field[] fields = ReflectUtil.getFields(clazz, f -> f.getAnnotation(ExcelProperty.class) != null);
+        Field[] fields = ReflectUtil.getFields(exportType, f -> f.getAnnotation(ExcelProperty.class) != null);
         List<Field> realFields = new ArrayList<>();
         for (Field f : fields) {
             boolean flag;

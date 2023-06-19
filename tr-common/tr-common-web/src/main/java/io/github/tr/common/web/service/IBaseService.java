@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.tr.common.base.exception.CheckEntityResult;
 import io.github.tr.common.base.query.QueryParams;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -56,4 +57,5 @@ public interface IBaseService<T> extends IService<T> {
 
     void deleteBatch(List<Serializable> ids);
 
+    void exportExcel(QueryParams<Map<String, Object>> queryParams, HttpServletResponse response);
 }
