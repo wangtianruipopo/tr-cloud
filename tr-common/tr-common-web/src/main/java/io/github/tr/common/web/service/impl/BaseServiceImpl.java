@@ -173,8 +173,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         }
         builder.writeHandler(writeHandlerList);
         ExcelUtil excelUtil = builder.build();
-        DownloadUtil.downExcel(response, fileName);
-        excelUtil.export();
+        DownloadUtil.downExcel(response, fileName, res -> excelUtil.export());
     }
 
     private Object getOneCommon(T t) {
