@@ -15,6 +15,7 @@ import io.github.tr.common.base.annotation.ExportExcel;
 import io.github.tr.common.base.exception.CheckEntityException;
 import io.github.tr.common.base.exception.CheckEntityResult;
 import io.github.tr.common.base.query.QueryParams;
+import io.github.tr.common.base.utils.DownloadUtil;
 import io.github.tr.common.base.utils.ExcelUtil;
 import io.github.tr.common.web.service.IBaseExcelHandler;
 import io.github.tr.common.web.service.IBaseService;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
-import java.net.URLEncoder;
 import java.util.*;
 
 @Service
@@ -174,12 +174,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         }
         builder.writeHandler(writeHandlerList);
         ExcelUtil excelUtil = builder.build();
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setCharacterEncoding("utf-8");
-        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
         excelUtil.export();
+        DownloadUtil.downExcel(response, fileName);
     }
 
     private Object getOneCommon(T t) {

@@ -13,7 +13,7 @@ public @interface ExportExcel {
      * excel导出文件名
      * @return 文件名
      */
-    String name() default "导出数据";
+    String value() default "导出数据";
 
     String sheetName() default "Sheet";
 
