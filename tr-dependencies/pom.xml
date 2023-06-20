@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.github.tr</groupId>
+	<groupId>io.github.wangtianruipopo</groupId>
 	<artifactId>tr-dependencies</artifactId>
 	<version>1.0</version>
 	<name>tr-dependencies</name>
@@ -32,27 +32,27 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.github.tr</groupId>
+				<groupId>io.github.wangtianruipopo</groupId>
 				<artifactId>tr-common-base</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.tr</groupId>
+				<groupId>io.github.wangtianruipopo</groupId>
 				<artifactId>tr-common-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.tr</groupId>
+				<groupId>io.github.wangtianruipopo</groupId>
 				<artifactId>tr-common-web-config</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.tr</groupId>
+				<groupId>io.github.wangtianruipopo</groupId>
 				<artifactId>tr-common-alibaba</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.tr</groupId>
+				<groupId>io.github.wangtianruipopo</groupId>
 				<artifactId>tr-common-mysql</artifactId>
 				<version>${project.version}</version>
 			</dependency>

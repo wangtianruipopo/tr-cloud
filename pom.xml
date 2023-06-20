@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.tr</groupId>
+    <groupId>io.github.wangtianruipopo</groupId>
     <artifactId>tr-cloud</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
@@ -127,7 +127,7 @@
             <!-- swagger 文档生成 结束 -->
             <!-- 自身依赖 -->
             <dependency>
-                <groupId>io.github.tr</groupId>
+                <groupId>io.github.wangtianruipopo</groupId>
                 <artifactId>tr-dependencies</artifactId>
                 <version>${tr-cloud.version}</version>
                 <type>pom</type>
@@ -177,17 +177,6 @@
             <timezone>+8</timezone>
         </developer>
     </developers>
-    <!-- 发布项目到 sonatype -->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>oss</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>oss</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <profiles>
         <profile>
