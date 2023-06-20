@@ -1,53 +1,47 @@
 package io.github.tr.common.web.config;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
-/**
- * @author wangtianrui
- */
-@AutoConfiguration
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+@Configuration
 public class ConverterAutoConfiguration {
+
     /**
-     * 转换HTTP请求和响应
-     *
-     * @return /
+     * Date格式化字符串
      */
-//    @Bean
-//    public HttpMessageConverters httpMessageConverters() {
-//        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-//
-//        FastJsonConfig config = new FastJsonConfig();
-//        config.setWriterFeatures(JSONWriter.Feature.PrettyFormat);
-//        config.setDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
-//        converter.setFastJsonConfig(config);
-//
-//        return new HttpMessageConverters(converter);
-//    }
-//
-//    @Bean
-//    public Converter<String, LocalDate> stringToLocalDateConverter() {
-//        return s -> {
-//            if (StrUtil.isEmpty(s)) {
-//                return null;
-//            }
-//            return LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//        };
-//    }
-//
-//    @Bean
-//    public Converter<String, LocalDateTime> stringToLocalDateTimeConverter() {
-//        return source -> {
-//            if (StrUtil.isBlank(source)) {
-//                return null;
-//            }
-//            try {
-//                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//            } catch (DateTimeParseException e) {
-//                LocalDate localDate = LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//                return LocalDateTime.of(localDate, LocalTime.of(0, 0));
-//            }
-//        };
-//    }
+    private static final String DATE_FORMAT = DatePattern.NORM_DATE_PATTERN; //yyyy-MM-dd
+    /**
+     * DateTime格式化字符串
+     */
+    private static final String DATETIME_FORMAT = DatePattern.NORM_DATETIME_PATTERN; //yyyy-MM-dd HH:mm:ss
+    /**
+     * Time格式化字符串
+     */
+    private static final String TIME_FORMAT = DatePattern.NORM_TIME_PATTERN; //HH:mm:ss
+
+    @Bean
+    @Primary
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+        return builder -> builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT)))
+                .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
+                .serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(TIME_FORMAT)))
+                .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT)))
+                .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
+                .deserializerByType(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(TIME_FORMAT)));
+    }
 }
+
