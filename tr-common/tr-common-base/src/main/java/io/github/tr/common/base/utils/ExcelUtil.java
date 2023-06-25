@@ -1,10 +1,11 @@
 package io.github.tr.common.base.utils;
 
+import cn.hutool.core.bean.BeanDesc;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.converters.AutoConverter;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -92,32 +94,36 @@ public class ExcelUtil {
     private void writeSheet(List<?> data, List<Field> fields, ExcelWriter excelWriter, WriteSheet writeSheet) {
         if (isCustomHead()) {
             List<List<Object>> dataList = new ArrayList<>();
-            data.forEach(item -> {
-                List<Object> itemList = new ArrayList<>();
-                assert fields != null;
-                fields.forEach(f -> {
-                    try {
-                        Object value = io.github.tr.common.base.utils.ReflectUtil.getValueByMethod(item, f);
-                        if (value != null) {
-                            // 获取converter属性
-                            ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
-                            Class<? extends Converter<?>> converter = excelProperty.converter();
-                            if (converter != null && !converter.equals(AutoConverter.class)) {
-                                String text = StringExcelConverter.getText((String) value, f);
-                                itemList.add(text);
+            if (!data.isEmpty()) {
+                BeanDesc beanDesc = BeanUtil.getBeanDesc(data.get(0).getClass());
+                data.forEach(item -> {
+                    List<Object> itemList = new ArrayList<>();
+                    assert fields != null;
+                    fields.forEach(f -> {
+                        try {
+                            Method getter = beanDesc.getGetter(f.getName());
+                            Object value = getter.invoke(item);
+                            if (value != null) {
+                                // 获取converter属性
+                                ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
+                                Class<? extends Converter<?>> converter = excelProperty.converter();
+                                if (converter != null && converter.equals(StringExcelConverter.class)) {
+                                    String text = StringExcelConverter.getText((String) value, f);
+                                    itemList.add(text);
+                                } else {
+                                    itemList.add(value);
+                                }
                             } else {
-                                itemList.add(value);
+                                itemList.add(null);
                             }
-                        } else {
-                            itemList.add(null);
-                        }
 
-                    } catch (Exception e) {
-                        log.error("导出异常！", e);
-                    }
+                        } catch (Exception e) {
+                            log.error("导出异常！", e);
+                        }
+                    });
+                    dataList.add(itemList);
                 });
-                dataList.add(itemList);
-            });
+            }
             excelWriter.write(dataList, writeSheet);
         } else {
             excelWriter.write(data, writeSheet);
