@@ -5,7 +5,7 @@
 
     <groupId>io.github.wangtianruipopo</groupId>
     <artifactId>tr-cloud</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
     <name>tr cloud</name>
     <description>tr云平台</description>
@@ -21,7 +21,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <compile.version>8</compile.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tr-cloud.version>1.0.2</tr-cloud.version>
+        <tr-cloud.version>1.0.3</tr-cloud.version>
         <spring-boot.version>2.7.12</spring-boot.version>
         <spring-cloud.version>2021.0.7</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
