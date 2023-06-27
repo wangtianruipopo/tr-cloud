@@ -168,8 +168,15 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
             Collection<Integer> columnsByIndex = handler.columnsByIndex(queryParams);
             Collection<String> columnsByName = handler.columnsByName(queryParams);
             Collection<WriteHandler> customHandlerList = handler.writeHandler(queryParams);
-            writeHandlerList.addAll(customHandlerList);
-            builder.columnsByIndex(columnsByIndex).columnsByName(columnsByName);
+            if (customHandlerList != null) {
+                writeHandlerList.addAll(customHandlerList);
+            }
+            if (columnsByIndex != null) {
+                builder.columnsByIndex(columnsByIndex);
+            }
+            if (columnsByName != null) {
+                builder.columnsByName(columnsByName);
+            }
         }
         builder.writeHandler(writeHandlerList);
         ExcelUtil excelUtil = builder.build();
