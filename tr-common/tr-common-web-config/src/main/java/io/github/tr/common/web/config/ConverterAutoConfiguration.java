@@ -17,19 +17,22 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * <h1>统一日期响应</h1>
+ */
 @Configuration
 public class ConverterAutoConfiguration {
 
     /**
-     * Date格式化字符串
+     * <h2>Date格式化字符串</h2>
      */
     private static final String DATE_FORMAT = DatePattern.NORM_DATE_PATTERN; //yyyy-MM-dd
     /**
-     * DateTime格式化字符串
+     * <h2>DateTime格式化字符串</h2>
      */
     private static final String DATETIME_FORMAT = DatePattern.NORM_DATETIME_PATTERN; //yyyy-MM-dd HH:mm:ss
     /**
-     * Time格式化字符串
+     * <h2>Time格式化字符串</h2>
      */
     private static final String TIME_FORMAT = DatePattern.NORM_TIME_PATTERN; //HH:mm:ss
 

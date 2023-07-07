@@ -13,16 +13,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
- * <h1>集成swagger文档，通过http://localhost:8080/doc.html访问页面</h1>
- */
-/***
+ * <h1>集成swagger文档</h1>
  */
 @EnableOpenApi
 @Configuration
 public class SwaggerConfig {
+
     /**
-     * 配置基本信息
-     * @return
+     * <h2>配置基本信息</h2>
+     *
+     * @return 配置基本信息
      */
     @Bean
     public ApiInfo apiInfo() {
@@ -30,15 +30,16 @@ public class SwaggerConfig {
                 .title("Swagger Test App Restful API")
                 .description("swagger test app restful api")
                 .termsOfServiceUrl("https://localhost:8080")
-                .contact(new Contact("深入技术架构","https://blog.csdn.net","xxx@csdn.net"))
+                .contact(new Contact("wangtianrui", "https://gitee.com/moxiaoxing", "425281019@qq.com"))
                 .version("1.0")
                 .build();
     }
 
     /**
-     * 配置文档生成最佳实践
-     * @param apiInfo
-     * @return
+     * <h2>配置文档生成最佳实践</h2>
+     *
+     * @param apiInfo 配置基本信息
+     * @return swagger 文档
      */
     @Bean
     public Docket createRestApi(ApiInfo apiInfo) {
@@ -50,6 +51,4 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-
 }

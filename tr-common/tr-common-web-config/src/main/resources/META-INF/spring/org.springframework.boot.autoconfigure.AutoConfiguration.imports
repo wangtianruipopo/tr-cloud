@@ -5,3 +5,5 @@ io.github.tr.common.web.config.ConverterConfig
 io.github.tr.common.web.config.GlobalExceptionHandler
 io.github.tr.common.web.config.SwaggerConfig
 io.github.tr.common.web.config.SwaggerHandler
+io.github.tr.common.web.config.SwaggerConfigEntity
+io.github.tr.common.web.config.SwaggerContact

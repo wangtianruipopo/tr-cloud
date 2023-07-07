@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -20,21 +21,26 @@ import java.util.Objects;
  * <h1>实现统一响应</h1>
  *
  * @author 王天瑞
- * @since 1.0
  * @version 1.0
+ * @since 1.0
  */
-@RestControllerAdvice(value = "com.harmonic")
+@RestControllerAdvice(annotations = RestController.class)
 @Slf4j
 public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
     /**
      * <h2>判断是否需要对响应进行处理</h2>
      *
      * @param methodParameter 请求方法对象
-     * @param converterType 处理类
+     * @param converterType   处理类
      * @return 是否需要进行响应处理
      */
     @Override
     public boolean supports(MethodParameter methodParameter, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
+        boolean springfox = methodParameter.getDeclaringClass().getName().contains("springfox");
+        if (springfox) {
+            // 如果是swagger请求，则不进行响应处理
+            return false;
+        }
         Class<?> declaringClass = methodParameter.getDeclaringClass();
         Method method = methodParameter.getMethod();
         Class<IgnoreResponseAdvice> type = IgnoreResponseAdvice.class;
@@ -44,12 +50,12 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
     /**
      * <h2>对请求响应结果进行封装</h2>
      *
-     * @param body 原生返回数据值
-     * @param returnType 返回类型
-     * @param selectedContentType 用不到
+     * @param body                  原生返回数据值
+     * @param returnType            返回类型
+     * @param selectedContentType   用不到
      * @param selectedConverterType 用不到
-     * @param request 用不到
-     * @param response 用不到
+     * @param request               用不到
+     * @param response              用不到
      * @return 请求响应结果
      */
     @Override

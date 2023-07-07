@@ -10,6 +10,7 @@ import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import io.github.tr.common.base.converter.ConverterItems;
 import io.github.tr.common.base.converter.StringExcelConverter;
 import io.github.tr.common.base.handler.DynamicExcelHandler;
 import io.github.tr.common.base.query.QueryFunction;
@@ -24,7 +25,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * Excel工具类
+ * <h1>Excel工具类</h1>
  *
  * @author wangtianrui
  */
@@ -32,15 +33,42 @@ import java.util.*;
 @Builder
 @Slf4j
 public class ExcelUtil {
+    /**
+     * <h2>excel文件的输出流</h2>
+     */
     private OutputStream outputStream;
+    /**
+     * <h2>查询导出数据的参数</h2>
+     */
     private QueryParams<Map<String, Object>> params;
+    /**
+     * <h2>导出数据的映射类类型</h2>
+     */
     private Class<?> exportType;
+    /**
+     * <h2>导出数据的查询方法</h2>
+     */
     private QueryFunction queryFunction;
+    /**
+     * <h2>导出excel的sheet页签名称</h2>
+     */
     private String sheetName;
+    /**
+     * <h2>自定义的excel处理类集合</h2>
+     */
     private Collection<WriteHandler> writeHandler;
+    /**
+     * <h2>决定展示哪些列（下标）的集合</h2>
+     */
     private Collection<Integer> columnsByIndex;
+    /**
+     * <h2>决定展示哪些列（属性名称）的集合</h2>
+     */
     private Collection<String> columnsByName;
 
+    /**
+     * <h2>导出excel</h2>
+     */
     public void export() {
         ExcelWriter excelWriter = null;
         ExcelWriterBuilder excelwriterbuilder;
@@ -91,6 +119,13 @@ public class ExcelUtil {
 
     }
 
+    /**
+     * <h2>写入excel</h2>
+     * @param data 写入数据
+     * @param fields 字段名集合
+     * @param excelWriter easy excel的写入excel对象
+     * @param writeSheet 写入excel的sheet页对象
+     */
     private void writeSheet(List<?> data, List<Field> fields, ExcelWriter excelWriter, WriteSheet writeSheet) {
         if (isCustomHead()) {
             List<List<Object>> dataList = new ArrayList<>();
@@ -108,7 +143,8 @@ public class ExcelUtil {
                                 ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
                                 Class<? extends Converter<?>> converter = excelProperty.converter();
                                 if (converter != null && converter.equals(StringExcelConverter.class)) {
-                                    String text = StringExcelConverter.getText((String) value, f);
+                                    ConverterItems converterItems = f.getAnnotation(ConverterItems.class);
+                                    String text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
                                     itemList.add(text);
                                 } else {
                                     itemList.add(value);

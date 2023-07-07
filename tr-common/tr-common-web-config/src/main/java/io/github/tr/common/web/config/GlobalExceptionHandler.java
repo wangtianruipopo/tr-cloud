@@ -29,7 +29,7 @@ import static io.github.tr.common.base.http.HttpResponseStatusEnum.REQUEST_PARAM
 import static io.github.tr.common.base.http.HttpResponseStatusEnum.SYS_ERROR;
 
 /**
- * 全局异常类
+ * <h1>全局异常类</h1>
  *
  * @author wangtianrui
  */
@@ -38,7 +38,7 @@ import static io.github.tr.common.base.http.HttpResponseStatusEnum.SYS_ERROR;
 public class GlobalExceptionHandler extends RuntimeException{
 
     /**
-     * 处理所有不可知异常
+     * <h2>处理所有不可知异常</h2>
      */
     @ExceptionHandler(value = Throwable.class)
     public HttpResult<Object> unknownException(Throwable e){
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler extends RuntimeException{
     }
 
     /**
-     * 处理校验字段失败异常
+     * <h2>处理校验字段失败异常</h2>
      * @param e 校验失败异常对象
      * @return 异常处理结果
      */

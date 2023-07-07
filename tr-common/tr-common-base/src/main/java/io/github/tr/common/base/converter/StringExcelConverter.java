@@ -25,35 +25,30 @@ public class StringExcelConverter implements Converter<String> {
     @Override
     public WriteCellData<?> convertToExcelData(String value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         Field field = contentProperty.getField();
-        String text = getText(value, field);
+        ConverterItems converterItems = field.getAnnotation(ConverterItems.class);
+        if (converterItems == null) return null;
+        String text = getText(value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
         if (text != null) {
             return new WriteCellData<>(text);
         }
         return null;
     }
 
-    public static String getText(String value, Field field) {
-        ConverterItems converterItems = field.getAnnotation(ConverterItems.class);
-        if (converterItems == null) return null;
-        String[] items = converterItems.items();
+    public static String getText(String value, boolean multipart, String[] items, Class<? extends BaseEnum> enumList, String categoryCode) {
+        Map<String, String> map = new HashMap<>();
+
         if (items != null && items.length > 0) {
-            Map<String, String> map = new HashMap<>();
             for (int i = 0; i < items.length; i += 2) {
                 map.put(items[i], items[i + 1]);
             }
-            return map.get(value);
         }
         // 从枚举里取
-        Class<? extends BaseEnum> enumList = converterItems.enumList();
-
         BaseEnum[] enums = enumList.getEnumConstants();
         if (enums != null) {
             for (BaseEnum baseEnum : enums) {
-                if (baseEnum.getCode().equals(value)) {
-                    return baseEnum.getName();
-                }
+                map.put(baseEnum.getCode(), baseEnum.getName());
             }
         }
-        return null;
+        return map.get(value);
     }
 }

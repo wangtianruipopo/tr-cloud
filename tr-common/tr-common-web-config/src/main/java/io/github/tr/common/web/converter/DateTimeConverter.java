@@ -18,7 +18,6 @@ public class DateTimeConverter implements Converter {
 
     @Override
     public Object convert(Class type, Object value) {
-        // TODO Auto-generated method stub
         return toDate(type, value);
     }
 
@@ -30,7 +29,7 @@ public class DateTimeConverter implements Converter {
             int length = dateValue.length();
             if (type.equals(java.util.Date.class)) {
                 try {
-                    DateFormat formatter = null;
+                    DateFormat formatter;
                     if (length <= 10) {
                         formatter = new SimpleDateFormat(DATE, new DateFormatSymbols(Locale.CHINA));
                         return formatter.parse(dateValue);
