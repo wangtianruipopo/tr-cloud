@@ -1,14 +1,15 @@
 package io.github.tr.common.web.config;
 
 import com.alibaba.fastjson2.JSON;
+import io.github.tr.common.base.annotation.IgnoreResponseAdvice;
 import io.github.tr.common.base.http.HttpResult;
-import io.github.tr.common.web.annotation.IgnoreResponseAdvice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -33,7 +34,7 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
      * @return 是否需要进行响应处理
      */
     @Override
-    public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(MethodParameter methodParameter, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         Class<?> declaringClass = methodParameter.getDeclaringClass();
         Method method = methodParameter.getMethod();
         Class<IgnoreResponseAdvice> type = IgnoreResponseAdvice.class;
@@ -52,7 +53,7 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
      * @return 请求响应结果
      */
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public Object beforeBodyWrite(Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         HttpResult<Object> result = HttpResult.ok();
         if (body instanceof HttpResult) {
             return body;

@@ -1,4 +1,4 @@
-package io.github.tr.common.web.annotation;
+package io.github.tr.common.base.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
