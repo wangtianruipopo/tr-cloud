@@ -82,6 +82,47 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    @SneakyThrows
+    @Transactional
+    public List<T> saveBatchEntity(List<Map<String, Object>> entityList) {
+        // 获取实体类类型
+        Class<T> entityType = (Class<T>) ClassUtil.getTypeArgument(this.getClass(), 1);
+        Assert.notNull(entityType);
+        List<T> saveList = new ArrayList<>();
+        List<T> afterUpdateList = new ArrayList<>();
+        List<T> afterInsertList = new ArrayList<>();
+        for (Map<String, Object> entity : entityList) {
+            T instance = entityType.getDeclaredConstructor().newInstance();
+            beanUtilsBean.populate(instance, entity);
+            Serializable key = ModelUtil.getKey(entity);
+            CheckEntityResult checkRes = new CheckEntityResult();
+            if (key != null) {
+                this.beforeUpdate(instance, key, checkRes);
+            } else {
+                this.beforeInsert(instance, checkRes);
+            }
+            if (checkRes.isPassed()) {
+                // 校验通过
+                saveList.add(instance);
+                if (key != null) {
+                    afterUpdateList.add(instance);
+                } else {
+                    afterInsertList.add(instance);
+                }
+            } else {
+                // 抛出异常
+                throw new CheckEntityException(checkRes);
+            }
+        }
+        // 批量更新
+        this.saveOrUpdateBatch(saveList);
+        afterUpdateList.forEach(this::afterUpdate);
+        afterInsertList.forEach(this::afterInsert);
+        return saveList;
+    }
+
+    @Override
     public IPage<?> query(QueryParams<Map<String, Object>> queryParams) {
         // 获取查询参数
         Map<String, Object> p = queryParams.getFilter();
@@ -209,9 +250,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         // 字体大小
         contentWriteFont.setFontHeightInPoints((short) 12);
         contentWriteCellStyle.setWriteFont(contentWriteFont);
-//		//头策略使用默认
-//		WriteCellStyle headWriteCellStyle = new WriteCellStyle();
-//		headWriteCellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
         return new HorizontalCellStyleStrategy(null, contentWriteCellStyle);
     }
 }

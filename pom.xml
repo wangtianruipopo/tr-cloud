@@ -5,7 +5,7 @@
 
     <groupId>io.github.wangtianruipopo</groupId>
     <artifactId>tr-cloud</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>pom</packaging>
     <name>tr cloud</name>
     <description>tr云平台</description>

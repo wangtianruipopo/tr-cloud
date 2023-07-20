@@ -43,6 +43,12 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
         return this.baseService.saveEntity(entity);
     }
 
+    @Operation(summary = "批量新增或修改")
+    @PostMapping("/saveBatch")
+    public List<T> saveBatch(@RequestBody List<Map<String, Object>> entityList) {
+        return this.baseService.saveBatchEntity(entityList);
+    }
+
     @Operation(summary = "根据主键id删除")
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable("id") Serializable id) {
@@ -50,9 +56,10 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
     }
 
     @Operation(summary = "批量删除")
-    @DeleteMapping("/deleteBatch")
-    public void deleteBatch(@RequestBody List<Serializable> ids) {
-        this.baseService.deleteBatch(ids);
+    @PostMapping("/deleteBatch")
+    @SuppressWarnings("unchecked")
+    public <I extends Serializable> void deleteBatch(@RequestBody List<I> ids) {
+        this.baseService.deleteBatch((List<Serializable>) ids);
     }
 
     @Operation(summary = "表格查询")
