@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 
 public class ModelUtil {
     public static Serializable getKey(Object entity) {
@@ -20,6 +21,14 @@ public class ModelUtil {
             Assert.notNull(fields);
             if (fields.length == 1) {
                 key = (Serializable) ReflectUtil.getFieldValue(entity, fields[0]);
+            }
+        }
+        if (key != null) {
+            if (key instanceof Number) {
+                BigDecimal _k = new BigDecimal(key.toString());
+                if (_k.equals(BigDecimal.ZERO)) {
+                    return null;
+                }
             }
         }
         return key;
