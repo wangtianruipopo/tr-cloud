@@ -32,8 +32,9 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
         CheckEntityResult result = new CheckEntityResult();
         if (key != null) {
             this.baseService.beforeUpdate(entity, key, result);
+        } else {
+            this.baseService.beforeInsert(entity, result);
         }
-        this.baseService.beforeInsert(entity, result);
         return result;
     }
 
