@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.tr.common.base.exception.CheckEntityResult;
 import io.github.tr.common.base.query.QueryParams;
+import io.github.tr.common.web.utils.IQueryFunction;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
@@ -72,6 +73,8 @@ public interface IBaseService<T> extends IService<T> {
      * @return 查询结果集及分页参数的包装对象
      */
     IPage<?> query(QueryParams<Map<String, Object>> queryParams);
+
+    IPage<?> query(QueryParams<Map<String, Object>> queryParams, IQueryFunction<T> fn);
 
     /**
      * <h2>与数据库交互的查询页面逻辑</h2>

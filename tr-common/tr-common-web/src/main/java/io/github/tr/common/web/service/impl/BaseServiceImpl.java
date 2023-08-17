@@ -19,6 +19,7 @@ import io.github.tr.common.base.utils.DownloadUtil;
 import io.github.tr.common.base.utils.ExcelUtil;
 import io.github.tr.common.web.service.IBaseExcelHandler;
 import io.github.tr.common.web.service.IBaseService;
+import io.github.tr.common.web.utils.IQueryFunction;
 import io.github.tr.common.web.utils.ModelUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtilsBean;
@@ -124,6 +125,11 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
 
     @Override
     public IPage<?> query(QueryParams<Map<String, Object>> queryParams) {
+        return this.query(queryParams, this::queryMapper);
+    }
+
+    @Override
+    public IPage<?> query(QueryParams<Map<String, Object>> queryParams, IQueryFunction<T> fn) {
         // 获取查询参数
         Map<String, Object> p = queryParams.getFilter();
         int pageIndex = queryParams.getPageIndex();
@@ -131,7 +137,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         Page<T> page = new Page<>();
         page.setCurrent(pageIndex);
         page.setSize(pageSize);
-        return this.queryMapper(page, p);
+        return fn.apply(page, p);
     }
 
     @Override
