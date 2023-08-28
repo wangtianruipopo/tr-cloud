@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.wangtianruipopo</groupId>
         <artifactId>tr-common</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>tr-common-base</artifactId>
