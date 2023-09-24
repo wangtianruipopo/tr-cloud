@@ -2,6 +2,7 @@ package io.github.tr.common.web.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.tr.common.base.exception.CheckEntityResult;
+import io.github.tr.common.base.http.HttpResult;
 import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.web.service.IBaseService;
 import io.github.tr.common.web.utils.ModelUtil;
@@ -71,14 +72,14 @@ public abstract class BaseController<S extends IBaseService<T>, T> {
 
     @Operation(summary = "根据主键获取View信息")
     @GetMapping("/get/{id}")
-    public Object get(@PathVariable("id") Serializable id) {
-        return this.baseService.get(id);
+    public HttpResult<?> get(@PathVariable("id") Serializable id) {
+        return HttpResult.ok(this.baseService.get(id));
     }
 
     @Operation(summary = "根据条件获取View信息")
     @PostMapping("/getByFilter")
-    public Object getByFilter(@RequestBody Map<String, Object> queryParams) {
-        return this.baseService.getByFilter(queryParams);
+    public HttpResult<?> getByFilter(@RequestBody Map<String, Object> queryParams) {
+        return HttpResult.ok(this.baseService.getByFilter(queryParams));
     }
 
     @Operation(summary = "导出查询结果为excel")

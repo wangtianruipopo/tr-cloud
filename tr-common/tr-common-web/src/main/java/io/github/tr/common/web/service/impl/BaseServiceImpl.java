@@ -231,6 +231,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     }
 
     private Object getOneCommon(T t) {
+        if ( t == null) return null;
         // 进行扩展处理
         Object res = this.extensionOne(t);
         if (res == null) {
