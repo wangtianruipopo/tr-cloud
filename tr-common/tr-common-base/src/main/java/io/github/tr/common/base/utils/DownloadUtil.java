@@ -29,6 +29,11 @@ public class DownloadUtil {
             log.error("文件名修改失败!", e);
         }
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName);
+        try {
+            response.setHeader("Content-length", String.valueOf(inputStream.available()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         BufferedInputStream bis = new BufferedInputStream(inputStream);
         try {
             OutputStream os = response.getOutputStream();
