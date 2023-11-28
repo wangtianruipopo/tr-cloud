@@ -89,7 +89,7 @@ public class ExcelUtil {
             }
             excelWriter = excelwriterbuilder.build();
             // 如果pageIndex和pageSize任意一个包含-1，则表示导出全部页
-            if (params.getPageIndex() == -1 || params.getPageSize() == -1) {
+            if (params != null && (params.getPageIndex() == -1 || params.getPageSize() == -1)) {
                 params.setPageSize(100000);
                 params.setPageIndex(1);
                 int index = 0;
