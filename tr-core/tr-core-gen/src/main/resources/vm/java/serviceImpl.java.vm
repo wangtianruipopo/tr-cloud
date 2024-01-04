@@ -1,0 +1,109 @@
+package ${filter.servicePath}.impl;
+
+#if (${filter.containExport})
+    #set($BaseExcelHandler = ", IBaseExcelHandler")
+#else
+    #set($BaseExcelHandler = "")
+#end
+#if (${filter.containExport})
+import com.alibaba.excel.write.handler.WriteHandler;
+#end
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${filter.mapperPath}.${table.className}Mapper;
+import ${filter.entityPath}.${table.className};
+import ${filter.servicePath}.I${table.className}Service;
+#if (${filter.containExport})
+import io.github.tr.common.base.annotation.ExportExcel;
+#end
+import io.github.tr.common.base.query.QueryParams;
+#if (${filter.containExport})
+import io.github.tr.common.web.service.IBaseExcelHandler;
+#end
+import io.github.tr.common.web.service.impl.WrapperServiceImpl;
+import org.springframework.stereotype.Service;
+#if (${filter.containExport})
+
+import java.util.*;
+#else
+
+#end
+/**
+ * ${table.tableComment} Service 实现类
+ *
+ * @author wangtianrui
+ */
+@Service
+#if (${filter.containExport})
+// ExportExcel注解用于excel导出
+// value为导出的excel表的文件名称，不填默认为【导出数据】
+// sheetName为导出excel表中的sheet页签名称，不填默认为【Sheet】
+// type为导出excel对应的VO类，即导出的字段名以谁为准，不填默认为service对应的实体类类型
+// 即如果你的导出表格就是实体类本身的话，type = ATest.class 这句话可以忽略
+// 如果不是实体类，即queryMapper方法返回的IPage<?>中的records不为实体类，可以手动指定
+// IBaseExcelHandler用于动态表头创建
+// 如根据页面条件的不同，而导出某些字段的excel，详情参考本演示类
+@ExportExcel(value = "${table.tableComment}", sheetName = "Sheet1", type = ${table.className}.class)
+#end
+public class ${table.className}ServiceImpl extends WrapperServiceImpl<${table.className}Mapper, ${table.className}> implements I${table.className}Service${BaseExcelHandler} {
+    /**
+     * 查询方法，可以重构，也可以默认读取WrapperServiceImpl的逻辑
+     * @param page 分页对象
+     * @param params 查询条件
+     * @return 查询结果集
+     */
+    @Override
+    public IPage<?> queryMapper(Page<${table.className}> page, Map<String, Object> params) {
+        return this.baseMapper.query(page, params);
+    }
+    #if (${filter.containExport})
+
+    /**
+     * 自定义excel样式的方法。继承于IBaseExcelHandler接口
+     * @param params 页面查询条件
+     * @return 改变excel样式的handler集合
+     */
+    @Override
+    public Collection<WriteHandler> writeHandler(QueryParams<Map<String, Object>> params) {
+        System.out.println("这个方法可以改变excel的一些样式");
+        System.out.println("这里只是告诉你有这个东西，不做任何修改，所以return null");
+        // WriteHandler 即Easy Excel自带的操作excel的回调函数
+        return null;
+    }
+
+    /**
+     * 根据条件决定显示导出的字段是哪些
+     * @param params 页面查询条件
+     * @return 决定展示的下标集合
+     */
+    @Override
+    public Collection<Integer> columnsByIndex(QueryParams<Map<String, Object>> params) {
+//        System.out.println("如返回ArrayList<Integer>");
+//        System.out.println("返回[1, 3, 8]");
+//        System.out.println("那么excel只会展示第一列，第三列，第八列");
+//        List<Integer> res = new ArrayList<>();
+//        res.add(0);
+//        res.add(1);
+//        return res;
+        return null;
+    }
+
+    /**
+     * 同上，只不过最终返回的是excel相应的VO类的字段名
+     * 即想展示哪些字段，就返回哪些字段的名称即可
+     * @param params 页面查询条件
+     * @return 决定展示的字段名称集合
+     */
+    @Override
+    public Collection<String> columnsByName(QueryParams<Map<String, Object>> params) {
+//        System.out.println("如ATest类，返回['f1', 'f2']");
+//        System.out.println("那么只会展示f1和f2这两列");
+//        System.out.println("这边展示下效果，params里面type传001，展示f1,f2,否则全部展示");
+//        Object type = params.getFilter().get("type");
+//        if ("001".equals(type)) {
+//            return Arrays.asList("f1", "f2");
+//        }
+        return null;
+    }
+    #end
+}

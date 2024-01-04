@@ -1,0 +1,53 @@
+package ${filter.entityPath};
+
+#if (${filter.containExport})
+import com.alibaba.excel.annotation.ExcelProperty;
+#end
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import io.swagger.annotations.ApiModelProperty;
+#foreach ($import in $table.importList)
+import ${import};
+#end
+#if ($table.importList.size() > 0)
+
+#end
+/**
+* ${table.tableComment}
+*/
+@TableName("${table.tableName}")
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ${table.className} extends Model<${table.className}> {
+    #foreach ($column in $table.columns)
+    #if($column.isPk())
+    @TableId(value = "${column.name}", type = IdType.ASSIGN_UUID)
+    private String id;
+    #else
+    @TableField("${column.columnName}")
+    @ApiModelProperty(value = "${column.columnComment}")
+    #if (${filter.containExport})
+    @ExcelProperty(value = "国网单位id"
+    #end
+    #if($column.javaType == 'Date')
+    private LocalDate ${column.name};
+    #elseif($column.javaType == 'DateTime')
+    private LocalDateTime ${column.name};
+    #elseif($column.javaType == 'Boolean')
+    private Boolean ${column.name};
+    #elseif($column.javaType == 'Integer')
+    private Integer ${column.name};
+    #elseif($column.javaType == 'Double')
+    private BigDecimal ${column.name};
+    #else
+    private String ${column.name};
+    #end
+    #end
+    #end
+}

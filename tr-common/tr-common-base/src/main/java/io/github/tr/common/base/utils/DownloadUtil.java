@@ -2,6 +2,7 @@ package io.github.tr.common.base.utils;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -799,7 +800,33 @@ public class DownloadUtil {
         consumer.accept(response);
     }
 
+    public static void downloadFile(HttpServletResponse response, String fileName, byte[] bytes) {
+        response.reset();
+        // 获取MIME
+        String finalFileName = fileName;
+        ALL_MIMES.forEach((k, v) -> {
+            if (finalFileName.endsWith(k)) {
+                response.setContentType(v);
+            }
+        });
+//        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("utf-8");
+        try {
+            fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            log.error("文件名修改失败!", e);
+        }
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName);
+        response.setHeader("Content-length", String.valueOf(bytes.length));
+        try {
+            IOUtils.write(bytes, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void downloadFile(HttpServletResponse response, String fileName, InputStream inputStream) {
+        response.reset();
         // 获取MIME
         String finalFileName = fileName;
         ALL_MIMES.forEach((k, v) -> {

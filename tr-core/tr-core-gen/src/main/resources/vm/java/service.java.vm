@@ -1,0 +1,12 @@
+package ${filter.servicePath};
+
+import ${filter.entityPath}.${table.className};
+import io.github.tr.common.web.service.IBaseService;
+
+/**
+ * ${table.tableComment}接口文件
+ *
+ * @author wangtianrui
+ */
+public interface I${table.className}Service extends IBaseService<${table.className}> {
+}

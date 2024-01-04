@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+        namespace="io.github.wangtianruipopo.trcoregen.mapper.TablesMapper">
+    <select id="listSchema" resultType="io.github.wangtianruipopo.trcoregen.entity.Schema">
+        select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME NOT IN ('information_schema', 'performance_schema', 'sys', 'mysql')
+    </select>
+    <select id="mysqlAllTables" resultType="io.github.wangtianruipopo.trcoregen.entity.Tables">
+        SELECT * FROM INFORMATION_SCHEMA.TABLES
+        <where>
+            and TABLE_SCHEMA NOT IN ('information_schema', 'performance_schema', 'sys', 'mysql')
+            <if test="params.schema != null">
+                and TABLE_SCHEMA = #{params.schema}
+            </if>
+        </where>
+    </select>
+</mapper>

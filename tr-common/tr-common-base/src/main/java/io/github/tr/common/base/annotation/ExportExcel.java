@@ -1,5 +1,7 @@
 package io.github.tr.common.base.annotation;
 
+import io.github.tr.common.base.handler.ExcelNameHandler;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -22,4 +24,10 @@ public @interface ExportExcel {
      * @return 导出对应类型
      */
     Class<?> type() default Void.class;
+
+    /**
+     * 根据查询参数决定Excel的文件名称及页签名称
+     * @return 处理类类型
+     */
+    Class<? extends ExcelNameHandler> excelNameHandler() default ExcelNameHandler.class;
 }

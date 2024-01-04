@@ -2,6 +2,7 @@ package io.github.tr.common.web.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.tr.common.base.annotation.ExportExcel;
 import io.github.tr.common.base.exception.CheckEntityException;
 import io.github.tr.common.base.exception.CheckEntityResult;
+import io.github.tr.common.base.handler.ExcelNameHandler;
 import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.base.utils.DownloadUtil;
 import io.github.tr.common.base.utils.ExcelUtil;
@@ -198,18 +200,25 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         String fileName = "导出数据";
         String sheetName = "Sheet";
         if (exportExcel != null) {
-            if (!exportExcel.type().equals(Void.class)) {
-                entityType = exportExcel.type();
+            Class<? extends ExcelNameHandler> excelNameHandlerClass = exportExcel.excelNameHandler();
+            if (!excelNameHandlerClass.equals(ExcelNameHandler.class)) {
+                ExcelNameHandler handler = ReflectUtil.newInstance(excelNameHandlerClass);
+                fileName = handler.fileName(queryParams);
+                sheetName = handler.sheetName(queryParams);
+            } else {
+                if (!exportExcel.type().equals(Void.class)) {
+                    entityType = exportExcel.type();
+                }
+                fileName = exportExcel.value();
+                sheetName = exportExcel.sheetName();
             }
-            fileName = exportExcel.value();
-            sheetName = exportExcel.sheetName();
         }
         Collection<WriteHandler> writeHandlerList = new ArrayList<>();
         HorizontalCellStyleStrategy styleStrategy = getStyleStrategy();
         writeHandlerList.add(styleStrategy);
         ExcelUtil.ExcelUtilBuilder builder = ExcelUtil.builder();
         builder.sheetName(sheetName).exportType(entityType).params(queryParams)
-            .outputStream(response.getOutputStream()).queryFunction(p -> this.query(p).getRecords());
+                .outputStream(response.getOutputStream()).queryFunction(p -> this.query(p).getRecords());
         if (this instanceof IBaseExcelHandler) {
             IBaseExcelHandler handler = (IBaseExcelHandler) this;
             Collection<Integer> columnsByIndex = handler.columnsByIndex(queryParams);
@@ -231,7 +240,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     }
 
     private Object getOneCommon(T t) {
-        if ( t == null) return null;
+        if (t == null) return null;
         // 进行扩展处理
         Object res = this.extensionOne(t);
         if (res == null) {

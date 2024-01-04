@@ -1,0 +1,21 @@
+package ${filter.mapperPath};
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${filter.entityPath}.${table.className};
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+@Mapper
+public interface ${table.className}Mapper extends BaseMapper<${table.className}> {
+    /**
+     * <h2>查询数据库方法</h2>
+     * <p>注意：IPage的反省可以是任何Java类或者Map和JSONObject等</p>
+     * <p>此处生成代码只是简单写成实体类，如有变更请自行修改！</p>
+     * @param page 分页参数
+     * @param params 查询条件
+     * @return 查询结果集
+    */
+    IPage<${table.className}> mysqlAllTables(Page<${table.className}> page, @Param("params") Map<String, Object> params);
+}
