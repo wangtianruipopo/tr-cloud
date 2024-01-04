@@ -4,6 +4,7 @@ server:
     context-path: /tr-cloud-core-gen
 spring:
   mvc:
+    dispatch-options-request: true
     pathmatch:
       matching-strategy: ant-path-matcher
   dataSource:
