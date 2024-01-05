@@ -47,7 +47,6 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
         String uuid = "TEMP_" + IdUtil.fastSimpleUUID();
         tableList.forEach(table -> {
             List<Columns> columns = this.listColumn(table.getTableSchema(), table.getTableName());
-            System.out.println(columns);
             // 生成实体类
             createCode(filter, table, columns, uuid);
         });
@@ -56,7 +55,7 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
         try {
             ZipUtil.fileToZip(fileRoot);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("生成压缩文件失败！", e);
         }
         byte[] bytes = new byte[0];
         InputStream zis = null;
@@ -85,20 +84,31 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
         File file = new File(fileRoot);
         File zipFile = new File(fileRoot + ".zip");
         deleteFolder(file);
-        zipFile.delete();
+        boolean b = zipFile.delete();
+        if (!b) {
+            log.error("删除文件失败！zipFile");
+        }
     }
 
     private static void deleteFolder(File folder) {
         if (folder != null && folder.isDirectory()) {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 if (file.isDirectory()) {
-                    deleteFolder(file); // 递归删除子文件夹
+                    // 递归删除子文件夹
+                    deleteFolder(file);
                 } else {
-                    file.delete(); // 直接删除文件
+                    // 直接删除文件
+                    boolean b = file.delete();
+                    if (!b) {
+                        log.error("删除文件失败！file");
+                    }
                 }
             }
-
-            folder.delete(); // 最后删除当前文件夹本身
+            // 最后删除当前文件夹本身
+            boolean b = folder.delete();
+            if (!b) {
+                log.error("删除文件失败！folder");
+            }
         }
     }
 

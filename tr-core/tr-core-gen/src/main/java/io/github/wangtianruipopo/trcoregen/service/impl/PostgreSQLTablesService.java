@@ -8,16 +8,14 @@ import io.github.wangtianruipopo.trcoregen.entity.Tables;
 import java.util.List;
 import java.util.Map;
 
-public class MySqlTablesService extends AbsTablesServiceImpl {
-
+public class PostgreSQLTablesService extends AbsTablesServiceImpl {
     @Override
     public IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p) {
-        return this.baseMapper.mysqlAllTables(page, p);
+        return null;
     }
 
     @Override
     public List<Columns> listColumn(String schema, String tableName) {
-        List<Columns> columns = this.columnsMapper.listMysqlByTableName(schema, tableName);
-        return columns;
+        return null;
     }
 }
