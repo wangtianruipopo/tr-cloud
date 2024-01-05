@@ -147,10 +147,7 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
         }
     }
 
-    @Override
-    public List<Schema> listSchema() {
-        return this.baseMapper.listSchema();
-    }
+    public abstract List<Schema> listSchema();
 
     public abstract IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p);
 

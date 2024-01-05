@@ -3,6 +3,7 @@ package io.github.wangtianruipopo.trcoregen.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.github.wangtianruipopo.trcoregen.entity.Columns;
+import io.github.wangtianruipopo.trcoregen.entity.Schema;
 import io.github.wangtianruipopo.trcoregen.entity.Tables;
 
 import java.util.List;
@@ -19,5 +20,10 @@ public class MySqlTablesService extends AbsTablesServiceImpl {
     public List<Columns> listColumn(String schema, String tableName) {
         List<Columns> columns = this.columnsMapper.listMysqlByTableName(schema, tableName);
         return columns;
+    }
+
+    @Override
+    public List<Schema> listSchema() {
+        return this.baseMapper.listSchema();
     }
 }
