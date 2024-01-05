@@ -18,7 +18,7 @@ public class Columns {
     private String columnKey;
 
     public boolean isPk() {
-        return "PRI".equals(this.columnKey);
+        return "PRI".equals(this.columnKey) || "PRIMARY KEY".equals(this.columnKey);
     }
     public String getJavaType() {
         String type = this.dataType;

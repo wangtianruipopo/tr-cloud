@@ -8,4 +8,61 @@
         SELECT * FROM INFORMATION_SCHEMA.COLUMNS
         where TABLE_SCHEMA = #{schema} and TABLE_NAME = #{tableName}
     </select>
+
+    <select id="listPgSqlByTableName" resultType="io.github.wangtianruipopo.trcoregen.entity.Columns">
+        SELECT
+            C.table_schema,
+            C.TABLE_NAME,
+            C.COLUMN_NAME,
+            C.is_nullable,
+            C.udt_name AS data_type,
+            C.character_maximum_length,
+            C.character_octet_length,
+            C.numeric_precision,
+            C.numeric_scale,
+            KEY.constraint_type AS column_key,
+            COMMENT.column_comment
+        FROM
+            INFORMATION_SCHEMA.COLUMNS C
+            LEFT JOIN (
+                SELECT
+                    b.COLUMN_NAME,
+                    A.constraint_type
+                FROM
+                    information_schema.table_constraints A,
+                    information_schema.key_column_usage b
+                WHERE
+                    A.TABLE_NAME = b.TABLE_NAME
+                  AND A.table_schema = b.table_schema
+                  AND A.CONSTRAINT_NAME = b.CONSTRAINT_NAME
+                  AND A.TABLE_NAME = #{tableName}
+                  AND A.table_schema = #{schema}
+            ) KEY ON C.COLUMN_NAME = KEY.COLUMN_NAME
+            LEFT JOIN (
+                SELECT
+                C.relname AS TABLE_NAME,
+                d.description AS column_comment,
+                A.attname AS COLUMN_NAME
+                FROM
+                pg_class C,
+                pg_attribute A,
+                pg_description d
+                WHERE
+                A.attrelid = C.oid
+                AND d.objoid = A.attrelid
+                AND d.objsubid = A.attnum
+                AND C.relname in (
+                select
+                tablename
+                from
+                pg_tables
+                where
+                schemaname = #{schema}
+                )
+                AND C.relname = #{tableName}
+            ) COMMENT ON COMMENT.COLUMN_NAME = C.COLUMN_NAME and C.table_name = COMMENT.table_name
+        WHERE
+            C.TABLE_SCHEMA = #{schema}
+          AND C.TABLE_NAME = #{tableName}
+    </select>
 </mapper>

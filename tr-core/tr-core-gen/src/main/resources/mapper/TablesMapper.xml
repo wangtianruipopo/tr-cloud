@@ -7,6 +7,11 @@
     <select id="listSchema" resultType="io.github.wangtianruipopo.trcoregen.entity.Schema">
         select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME NOT IN ('information_schema', 'performance_schema', 'sys', 'mysql')
     </select>
+
+    <select id="listPgSchema" resultType="io.github.wangtianruipopo.trcoregen.entity.Schema">
+        select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME NOT IN ('information_schema', 'pg_catalog' )
+    </select>
+
     <select id="mysqlAllTables" resultType="io.github.wangtianruipopo.trcoregen.entity.Tables">
         SELECT * FROM INFORMATION_SCHEMA.TABLES
         <where>
@@ -16,4 +21,28 @@
             </if>
         </where>
     </select>
+
+    <select id="pgsqlAllTables" resultType="io.github.wangtianruipopo.trcoregen.entity.Tables">
+        SELECT * FROM INFORMATION_SCHEMA.TABLES
+        LEFT JOIN (
+            SELECT
+            relname,
+            CAST ( obj_description ( relfilenode, 'pg_class' ) AS VARCHAR ) AS table_comment
+            FROM
+            pg_class
+        <where>
+            <if test="params.schema != null">
+                and relname IN ( SELECT tablename FROM pg_tables WHERE schemaname = #{params.schema} )
+            </if>
+        </where>
+        ) c ON c.relname = TABLE_NAME
+        <where>
+            and TABLE_SCHEMA NOT IN ( 'information_schema', 'pg_catalog' )
+            <if test="params.schema != null">
+                and TABLE_SCHEMA = #{params.schema}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

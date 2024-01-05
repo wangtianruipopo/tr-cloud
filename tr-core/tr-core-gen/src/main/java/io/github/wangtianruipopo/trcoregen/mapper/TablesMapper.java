@@ -14,5 +14,7 @@ import java.util.Map;
 @Mapper
 public interface TablesMapper extends BaseMapper<Tables> {
     List<Schema> listSchema();
-    IPage<?> mysqlAllTables(Page<Tables> page, @Param("params") Map<String, Object> params);
+    List<Schema> listPgSchema();
+    IPage<Tables> mysqlAllTables(Page<Tables> page, @Param("params") Map<String, Object> params);
+    IPage<Tables> pgsqlAllTables(Page<Tables> page, @Param("params") Map<String, Object> params);
 }

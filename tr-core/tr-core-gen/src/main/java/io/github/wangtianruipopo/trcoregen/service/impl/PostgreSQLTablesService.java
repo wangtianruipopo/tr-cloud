@@ -12,16 +12,16 @@ import java.util.Map;
 public class PostgreSQLTablesService extends AbsTablesServiceImpl {
     @Override
     public IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p) {
-        return null;
+        return this.baseMapper.pgsqlAllTables(page, p);
     }
 
     @Override
     public List<Columns> listColumn(String schema, String tableName) {
-        return null;
+        return this.columnsMapper.listPgSqlByTableName(schema, tableName);
     }
 
     @Override
     public List<Schema> listSchema() {
-        return null;
+        return this.baseMapper.listPgSchema();
     }
 }
