@@ -18,8 +18,7 @@ public class MySqlTablesService extends AbsTablesServiceImpl {
 
     @Override
     public List<Columns> listColumn(String schema, String tableName) {
-        List<Columns> columns = this.columnsMapper.listMysqlByTableName(schema, tableName);
-        return columns;
+        return this.columnsMapper.listMysqlByTableName(schema, tableName);
     }
 
     @Override
