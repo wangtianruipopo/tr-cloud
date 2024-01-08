@@ -1,45 +1,45 @@
-server:
-  port: 28080
-  servlet:
-    context-path: /tr-cloud-core-gen
-spring:
-  mvc:
-    dispatch-options-request: true
-    pathmatch:
-      matching-strategy: ant-path-matcher
-  dataSource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    username: ${db.username}
-    password: ${db.password}
-#    url: jdbc:mysql://${db.ip}:${db.port}/${db.schema}?characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowPublicKeyRetrieval=true
-    url: jdbc:postgresql://${db.ip}:${db.port}/${db.schema}?stringtype=unspecified&currentSchema=public&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true
-#  cloud:
-#    nacos:
-#      # 注册中心
-#      discovery:
-#        server-addr: http://169.254.99.183:8848
-#        namespace: 2ebe485d-13b8-4ef3-bad3-03317aed30f5
-#      # 配置中心
-#      config:
-#        import-check:
-#          enabled: false
-#        server-addr: ${spring.cloud.nacos.discovery.server-addr}
-#        namespace: 2ebe485d-13b8-4ef3-bad3-03317aed30f5
-#        file-extension: yml
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-db:
-  ip: 169.254.99.183
-  port: 5432
-  schema: haiyisoft
-  username: haiyipublic
-  password: haiyipublic
-  type: POSTGRE_SQL
-
-  # 以下是mysql数据库配置
-  #  port: 3306
-  #  schema: jygk_data
-  #  username: root
-  #  password: root
-  #  type: MYSQL
+#server:
+#  port: 28080
+#  servlet:
+#    context-path: /tr-cloud-core-gen
+#spring:
+#  mvc:
+#    dispatch-options-request: true
+#    pathmatch:
+#      matching-strategy: ant-path-matcher
+#  dataSource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    username: ${db.username}
+#    password: ${db.password}
+##    url: jdbc:mysql://${db.ip}:${db.port}/${db.schema}?characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowPublicKeyRetrieval=true
+#    url: jdbc:postgresql://${db.ip}:${db.port}/${db.schema}?stringtype=unspecified&currentSchema=public&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true
+##  cloud:
+##    nacos:
+##      # 注册中心
+##      discovery:
+##        server-addr: http://169.254.99.183:8848
+##        namespace: 2ebe485d-13b8-4ef3-bad3-03317aed30f5
+##      # 配置中心
+##      config:
+##        import-check:
+##          enabled: false
+##        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+##        namespace: 2ebe485d-13b8-4ef3-bad3-03317aed30f5
+##        file-extension: yml
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#db:
+#  ip: 169.254.99.183
+#  port: 5432
+#  schema: haiyisoft
+#  username: haiyipublic
+#  password: haiyipublic
+#  type: POSTGRE_SQL
+#
+#  # 以下是mysql数据库配置
+#  #  port: 3306
+#  #  schema: jygk_data
+#  #  username: root
+#  #  password: root
+#  #  type: MYSQL
