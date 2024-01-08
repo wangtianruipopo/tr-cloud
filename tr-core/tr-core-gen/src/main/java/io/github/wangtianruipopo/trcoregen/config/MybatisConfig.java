@@ -18,7 +18,7 @@ public class MybatisConfig {
         switch (type) {
             case "MYSQL": return DbType.MYSQL;
             case "POSTGRE_SQL": return DbType.POSTGRE_SQL;
-            default: return DbType.MYSQL;
         }
+        return null;
     }
 }
