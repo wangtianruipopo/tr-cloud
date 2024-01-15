@@ -13,7 +13,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>tr-core-auth</module>
+        <module>tr-core-auth-config</module>
         <module>tr-core-gen</module>
+        <module>tr-cloud-gateway</module>
     </modules>
 
 </project>

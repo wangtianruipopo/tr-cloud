@@ -22,8 +22,8 @@
         <compile.version>8</compile.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tr-cloud.version>1.1.7</tr-cloud.version>
-        <spring-boot.version>2.7.12</spring-boot.version>
-        <spring-cloud.version>2021.0.7</spring-cloud.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <hutool.version>5.8.20</hutool.version>
         <mysql.version>8.0.33</mysql.version>
