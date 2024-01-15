@@ -9,16 +9,16 @@ spring:
   application:
     # 应用名称
     name: tr-cloud-gateway
-  profiles:
-    # 环境配置
-    active: dev
+#  profiles:
+#    # 环境配置
+#    active: dev
 
 --- # nacos 配置
 spring:
   cloud:
     nacos:
       # nacos 服务地址
-      server-addr: 169.254.99.183
+      server-addr: 169.254.99.183:8848
       discovery:
         # 注册组
         group: DEFAULT_GROUP
@@ -26,7 +26,7 @@ spring:
       config:
         # 配置组
         group: DEFAULT_GROUP
-        namespace: 5f96aaa4-3c62-4761-8b31-3d4aa9f5b5d2
+        namespace: d2849116-e5e9-4131-99d8-daa0d27d4d98
   config:
     import:
       - optional:nacos:${spring.application.name}.yml
