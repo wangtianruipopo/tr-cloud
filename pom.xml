@@ -33,11 +33,35 @@
         <lombok.version>1.18.28</lombok.version>
         <easyexcel.version>3.3.2</easyexcel.version>
         <swagger.version>3.0.3</swagger.version>
+        <dubbo.version>2.7.4</dubbo.version>
+        <satoken.version>1.37.0</satoken.version>
         <Automatic-Module-Name>io.github.tr</Automatic-Module-Name>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：http://sa-token.dev33.cn/ -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+            <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-redis-jackson</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-core</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>2.12.0</version>
+            </dependency>
             <!-- Spring Boot 相关依赖开始 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -127,6 +151,37 @@
                 <version>${swagger.version}</version>
             </dependency>
             <!-- swagger 文档生成 结束 -->
+            <!-- Apache Dubbo 配置 开始 -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-actuator</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-autoconfigure-compatible</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <!-- Apache Dubbo 配置 结束 -->
             <!-- 自身依赖 -->
             <dependency>
                 <groupId>io.github.wangtianruipopo</groupId>
@@ -151,6 +206,21 @@
             <dependency>
                 <groupId>io.github.wangtianruipopo</groupId>
                 <artifactId>tr-common-mysql</artifactId>
+                <version>${tr-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.wangtianruipopo</groupId>
+                <artifactId>tr-core-auth-config</artifactId>
+                <version>${tr-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.wangtianruipopo</groupId>
+                <artifactId>tr-core-auth</artifactId>
+                <version>${tr-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.wangtianruipopo</groupId>
+                <artifactId>tr-cloud-gateway</artifactId>
                 <version>${tr-cloud.version}</version>
             </dependency>
         </dependencies>

@@ -18,6 +18,18 @@
             <artifactId>sa-token-spring-boot-starter</artifactId>
             <version>1.37.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.wangtianruipopo</groupId>
+            <artifactId>tr-core-auth-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.wangtianruipopo</groupId>
+            <artifactId>tr-common-base</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
