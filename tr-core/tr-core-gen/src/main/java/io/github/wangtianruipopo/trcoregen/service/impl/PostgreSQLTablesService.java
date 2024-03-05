@@ -2,6 +2,7 @@ package io.github.wangtianruipopo.trcoregen.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.github.tr.common.base.query.OrderByColumn;
 import io.github.wangtianruipopo.trcoregen.entity.Columns;
 import io.github.wangtianruipopo.trcoregen.entity.Schema;
 import io.github.wangtianruipopo.trcoregen.entity.Tables;
@@ -11,8 +12,8 @@ import java.util.Map;
 
 public class PostgreSQLTablesService extends AbsTablesServiceImpl {
     @Override
-    public IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p) {
-        return this.baseMapper.pgsqlAllTables(page, p);
+    public IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p, List<OrderByColumn> order) {
+        return this.baseMapper.pgsqlAllTables(page, p, order);
     }
 
     @Override

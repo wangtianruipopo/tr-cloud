@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.tr.common.base.exception.CheckEntityResult;
+import io.github.tr.common.base.query.OrderByColumn;
 import io.github.tr.common.base.query.QueryParams;
 import io.github.tr.common.web.utils.IQueryFunction;
 
@@ -83,7 +84,7 @@ public interface IBaseService<T> extends IService<T> {
      * @param p 查询条件
      * @return 查询结果集及分页参数的包装对象
      */
-    IPage<?> queryMapper(Page<T> page, Map<String, Object> p);
+    IPage<?> queryMapper(Page<T> page, Map<String, Object> p, List<OrderByColumn> order);
 
     /**
      * <h2>根据主键id获取对象信息</h2>

@@ -27,4 +27,10 @@ public class UserServiceImpl implements IUserService {
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         return HttpResult.ok(tokenInfo);
     }
+
+    @Override
+    public HttpResult<Void> logout() {
+        StpUtil.logout();
+        return HttpResult.ok();
+    }
 }

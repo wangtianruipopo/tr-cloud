@@ -5,10 +5,7 @@ import io.github.tr.common.base.entity.LoginUser;
 import io.github.tr.common.base.http.HttpResult;
 import io.github.wangtianruipopo.trcoreauth.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,10 @@ public class UserController {
     @PostMapping("/login")
     public HttpResult<SaTokenInfo> login(@RequestBody LoginUser loginUser) {
         return userService.login(loginUser);
+    }
+
+    @GetMapping("/logout")
+    public HttpResult<Void> logout() {
+        return userService.logout();
     }
 }

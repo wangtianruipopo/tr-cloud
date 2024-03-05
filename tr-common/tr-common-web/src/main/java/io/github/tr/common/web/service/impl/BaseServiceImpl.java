@@ -139,7 +139,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         Page<T> page = new Page<>();
         page.setCurrent(pageIndex);
         page.setSize(pageSize);
-        return fn.apply(page, p);
+        return fn.apply(page, p, queryParams.getOrder());
     }
 
     @Override

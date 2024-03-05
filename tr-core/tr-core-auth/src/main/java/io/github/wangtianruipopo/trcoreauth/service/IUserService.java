@@ -6,4 +6,6 @@ import io.github.tr.common.base.http.HttpResult;
 
 public interface IUserService {
     HttpResult<SaTokenInfo> login(LoginUser loginUser);
+
+    HttpResult<Void> logout();
 }

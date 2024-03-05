@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.github.tr.common.base.query.OrderByColumn;
 import io.github.tr.common.base.utils.DownloadUtil;
 import io.github.tr.common.web.service.impl.WrapperServiceImpl;
 import io.github.wangtianruipopo.trcoregen.entity.*;
@@ -37,8 +38,8 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
     protected ColumnsMapper columnsMapper;
 
     @Override
-    public IPage<?> queryMapper(Page<Tables> page, Map<String, Object> p) {
-        return dynamicQuery(page, p);
+    public IPage<?> queryMapper(Page<Tables> page, Map<String, Object> p, List<OrderByColumn> order) {
+        return dynamicQuery(page, p, order);
     }
 
     @Override
@@ -149,7 +150,7 @@ public abstract class AbsTablesServiceImpl extends WrapperServiceImpl<TablesMapp
 
     public abstract List<Schema> listSchema();
 
-    public abstract IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p);
+    public abstract IPage<?> dynamicQuery(Page<Tables> page, Map<String, Object> p, List<OrderByColumn> order);
 
     public abstract List<Columns> listColumn(String schema, String tableName);
 }
