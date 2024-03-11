@@ -3,6 +3,7 @@ package io.github.tr.common.web.service.impl;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.extra.spring.EnableSpringUtil;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -233,6 +234,9 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
             if (columnsByName != null) {
                 builder.columnsByName(columnsByName);
             }
+            builder.allColumn(false);
+        } else {
+            builder.allColumn(true);
         }
         builder.writeHandler(writeHandlerList);
         ExcelUtil excelUtil = builder.build();

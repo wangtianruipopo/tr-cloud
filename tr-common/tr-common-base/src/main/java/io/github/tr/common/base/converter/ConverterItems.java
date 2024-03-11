@@ -36,4 +36,6 @@ public @interface ConverterItems {
      */
     boolean multipart() default false;
 
+    Class<? extends TransCode> transCodeClass() default TransCode.class;
+
 }

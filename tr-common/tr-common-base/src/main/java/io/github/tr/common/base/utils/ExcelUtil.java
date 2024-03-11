@@ -6,12 +6,14 @@ import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.converters.AutoConverter;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import io.github.tr.common.base.converter.ConverterItems;
 import io.github.tr.common.base.converter.StringExcelConverter;
+import io.github.tr.common.base.converter.TransCode;
 import io.github.tr.common.base.handler.DynamicExcelHandler;
 import io.github.tr.common.base.query.QueryFunction;
 import io.github.tr.common.base.query.QueryParams;
@@ -66,6 +68,8 @@ public class ExcelUtil {
      */
     private Collection<String> columnsByName;
 
+    private boolean allColumn;
+
     /**
      * <h2>导出excel</h2>
      */
@@ -75,7 +79,6 @@ public class ExcelUtil {
         try {
             final List<Field> fields = getCustomField();
             if (isCustomHead()) {
-                assert fields != null;
                 List<List<String>> head = getCustomHead(fields);
                 excelwriterbuilder = EasyExcel.write(outputStream).head(head);
                 excelwriterbuilder.registerWriteHandler(new DynamicExcelHandler(fields));
@@ -121,10 +124,11 @@ public class ExcelUtil {
 
     /**
      * <h2>写入excel</h2>
-     * @param data 写入数据
-     * @param fields 字段名集合
+     *
+     * @param data        写入数据
+     * @param fields      字段名集合
      * @param excelWriter easy excel的写入excel对象
-     * @param writeSheet 写入excel的sheet页对象
+     * @param writeSheet  写入excel的sheet页对象
      */
     private void writeSheet(List<?> data, List<Field> fields, ExcelWriter excelWriter, WriteSheet writeSheet) {
         if (isCustomHead()) {
@@ -142,12 +146,22 @@ public class ExcelUtil {
                                 // 获取converter属性
                                 ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
                                 Class<? extends Converter<?>> converter = excelProperty.converter();
-                                if (converter != null && converter.equals(StringExcelConverter.class)) {
-                                    ConverterItems converterItems = f.getAnnotation(ConverterItems.class);
-                                    String text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
+                                ConverterItems converterItems = f.getAnnotation(ConverterItems.class);
+                                // 判断是否需要获取bean
+                                Class<? extends TransCode> transCodeClass = converterItems.transCodeClass();
+                                String text = null;
+                                if (!TransCode.class.equals(transCodeClass)) {
+                                    // 获取bean
+                                    TransCode transCode = ReflectUtil.newInstance(transCodeClass);
+                                    text = transCode.getText(value, converterItems.categoryCode(), converterItems.multipart());
                                     itemList.add(text);
                                 } else {
-                                    itemList.add(value);
+                                    if (converter.equals(StringExcelConverter.class)) {
+                                        text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
+                                        itemList.add(text);
+                                    } else if (converter.equals(AutoConverter.class)) {
+                                        itemList.add(value);
+                                    }
                                 }
                             } else {
                                 itemList.add(null);
@@ -175,24 +189,21 @@ public class ExcelUtil {
     }
 
     private boolean isCustomHead() {
-        return isIndex() || isName();
+        return allColumn || isIndex() || isName();
     }
 
     private List<Field> getCustomField() {
         boolean isIndex = isIndex();
         boolean isName = isName();
-        if (!isIndex && !isName) {
-            return null;
-        }
         // 先将实体类的所有excel字段取出
         Field[] fields = ReflectUtil.getFields(exportType, f -> f.getAnnotation(ExcelProperty.class) != null);
         List<Field> realFields = new ArrayList<>();
         for (Field f : fields) {
-            boolean flag;
+            boolean flag = true;
             if (isName) {
                 String fieldName = f.getName();
                 flag = columnsByName.contains(fieldName);
-            } else {
+            } else if (isIndex) {
                 ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
                 int index = excelProperty.index();
                 flag = columnsByIndex.contains(index);
