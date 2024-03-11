@@ -147,19 +147,21 @@ public class ExcelUtil {
                                 ExcelProperty excelProperty = f.getAnnotation(ExcelProperty.class);
                                 Class<? extends Converter<?>> converter = excelProperty.converter();
                                 ConverterItems converterItems = f.getAnnotation(ConverterItems.class);
-                                // 判断是否需要获取bean
-                                Class<? extends TransCode> transCodeClass = converterItems.transCodeClass();
-                                String text = null;
-                                if (!TransCode.class.equals(transCodeClass)) {
-                                    // 获取bean
-                                    TransCode transCode = ReflectUtil.newInstance(transCodeClass);
-                                    text = transCode.getText(value, converterItems.categoryCode(), converterItems.multipart());
-                                    itemList.add(text);
-                                } else {
-                                    if (converter.equals(StringExcelConverter.class)) {
-                                        text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
+                                if (converterItems != null) {
+                                    // 判断是否需要获取bean
+                                    Class<? extends TransCode> transCodeClass = converterItems.transCodeClass();
+                                    if (!TransCode.class.equals(transCodeClass)) {
+                                        // 获取bean
+                                        TransCode transCode = ReflectUtil.newInstance(transCodeClass);
+                                        String text = transCode.getText(value, converterItems.categoryCode(), converterItems.multipart());
                                         itemList.add(text);
-                                    } else if (converter.equals(AutoConverter.class)) {
+                                    } else if (converter.equals(StringExcelConverter.class)) {
+
+                                        String text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
+                                        itemList.add(text);
+                                    }
+                                } else {
+                                    if (converter.equals(AutoConverter.class)) {
                                         itemList.add(value);
                                     }
                                 }
