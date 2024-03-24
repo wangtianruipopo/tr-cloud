@@ -7,6 +7,10 @@ import ${filter.entityPath}.${table.className};
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
+import static io.github.tr.common.mysql.constant.MybatisConstant.ORDER_NAME;
+
 @Mapper
 public interface ${table.className}Mapper extends BaseMapper<${table.className}> {
     /**
@@ -15,7 +19,8 @@ public interface ${table.className}Mapper extends BaseMapper<${table.className}>
      * <p>此处生成代码只是简单写成实体类，如有变更请自行修改！</p>
      * @param page 分页参数
      * @param params 查询条件
+     * @param order 排序字段
      * @return 查询结果集
     */
-    IPage<${table.className}> mysqlAllTables(Page<${table.className}> page, @Param("params") Map<String, Object> params);
+    IPage<${table.className}> query(Page<${table.className}> page, @Param("params") Map<String, Object> params, @Param(ORDER_NAME) List<OrderByColumn> order);
 }

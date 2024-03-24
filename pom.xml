@@ -31,7 +31,7 @@
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <fastjson2.version>2.0.39</fastjson2.version>
         <lombok.version>1.18.28</lombok.version>
-        <easyexcel.version>3.3.2</easyexcel.version>
+        <easyexcel.version>3.3.4</easyexcel.version>
         <swagger.version>3.0.3</swagger.version>
         <dubbo.version>2.7.4</dubbo.version>
         <satoken.version>1.37.0</satoken.version>

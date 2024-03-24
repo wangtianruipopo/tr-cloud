@@ -19,6 +19,9 @@
             <if test="params.schema != null">
                 and TABLE_SCHEMA = #{params.schema}
             </if>
+            <if test="params.tableName != null">
+                and TABLE_NAME like concat('%',  #{params.tableName}, '%')
+            </if>
         </where>
     </select>
 

@@ -20,6 +20,7 @@ import io.github.tr.common.base.query.QueryParams;
 #if (${filter.containExport})
 import io.github.tr.common.web.service.IBaseExcelHandler;
 #end
+import io.github.tr.common.base.query.OrderByColumn;
 import io.github.tr.common.web.service.impl.WrapperServiceImpl;
 import org.springframework.stereotype.Service;
 #if (${filter.containExport})
@@ -53,8 +54,8 @@ public class ${table.className}ServiceImpl extends WrapperServiceImpl<${table.cl
      * @return 查询结果集
      */
     @Override
-    public IPage<?> queryMapper(Page<${table.className}> page, Map<String, Object> params) {
-        return this.baseMapper.query(page, params);
+    public IPage<?> queryMapper(Page<${table.className}> page, Map<String, Object> params, List<OrderByColumn> order) {
+        return this.baseMapper.query(page, params, order);
     }
     #if (${filter.containExport})
 

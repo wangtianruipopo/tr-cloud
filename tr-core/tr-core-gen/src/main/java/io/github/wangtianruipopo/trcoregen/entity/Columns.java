@@ -25,7 +25,7 @@ public class Columns {
         if ("varchar".equals(type) || "text".equals(type) || "longtext".equals(type)) return "String";
         if ("int".equals(type)) return "Integer";
         if ("decimal".equals(type)) return "Double";
-        if ("timestamp".equals(type)) {
+        if ("timestamp".equals(type) || "datetime".equals(type)) {
             return "DateTime";
         }
         if ("date".equals(type)) return "Date";
