@@ -11,6 +11,7 @@ import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import io.github.tr.common.base.converter.CodeFunction;
 import io.github.tr.common.base.converter.ConverterItems;
 import io.github.tr.common.base.converter.StringExcelConverter;
 import io.github.tr.common.base.converter.TransCode;
@@ -148,16 +149,22 @@ public class ExcelUtil {
                                 Class<? extends Converter<?>> converter = excelProperty.converter();
                                 ConverterItems converterItems = f.getAnnotation(ConverterItems.class);
                                 if (converterItems != null) {
+                                    String code = converterItems.categoryCode();
+                                    Class<? extends CodeFunction> funcCode = converterItems.funcCode();
+                                    if (!funcCode.equals(CodeFunction.class)) {
+                                        CodeFunction codeFunction = ReflectUtil.newInstance(funcCode);
+                                        code = codeFunction.getCode(item);
+                                    }
                                     // 判断是否需要获取bean
                                     Class<? extends TransCode> transCodeClass = converterItems.transCodeClass();
                                     if (!TransCode.class.equals(transCodeClass)) {
                                         // 获取bean
                                         TransCode transCode = ReflectUtil.newInstance(transCodeClass);
-                                        String text = transCode.getText(value, converterItems.categoryCode(), converterItems.multipart());
+                                        String text = transCode.getText(value, code, converterItems.multipart());
                                         itemList.add(text);
                                     } else if (converter.equals(StringExcelConverter.class)) {
 
-                                        String text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), converterItems.categoryCode());
+                                        String text = StringExcelConverter.getText((String) value, false, converterItems.items(), converterItems.enumList(), code);
                                         itemList.add(text);
                                     }
                                 } else {

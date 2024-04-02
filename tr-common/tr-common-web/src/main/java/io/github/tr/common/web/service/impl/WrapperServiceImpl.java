@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,12 @@ public class WrapperServiceImpl<M extends BaseMapper<T>, T> extends BaseServiceI
     public IPage<?> queryMapper(Page<T> page, Map<String, Object> p, List<OrderByColumn> order) {
         Method query = ClassUtil.getDeclaredMethod(this.baseMapper.getClass(), "query", page.getClass(), p.getClass());
         if (query != null) {
-            return (IPage<?>) query.invoke(this.baseMapper, page, p, order);
+            Parameter[] parameters = query.getParameters();
+            if (parameters.length == 3) {
+                return (IPage<?>) query.invoke(this.baseMapper, page, p, order);
+            } else if (parameters.length == 2) {
+                return (IPage<?>) query.invoke(this.baseMapper, page, p);
+            }
         }
         return null;
     }

@@ -4,6 +4,7 @@ import io.github.tr.common.base.enums.BaseEnum;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.function.Function;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -23,6 +24,8 @@ public @interface ConverterItems {
      * @return 码值关系
      */
     String categoryCode() default "";
+
+    Class<? extends CodeFunction> funcCode() default CodeFunction.class;
 
     /**
      * <h2>写死的码值关系，存储于枚举中</h2>

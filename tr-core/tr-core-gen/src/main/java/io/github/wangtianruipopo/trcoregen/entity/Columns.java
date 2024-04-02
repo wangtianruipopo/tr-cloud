@@ -10,10 +10,10 @@ public class Columns {
     private String columnName;
     private String isNullable;
     private String dataType;
-    private Integer characterMaximumLength;
-    private Integer characterOctetLength;
-    private Integer numericPrecision;
-    private Integer numericScale;
+    private Long characterMaximumLength;
+    private Long characterOctetLength;
+    private Long numericPrecision;
+    private Long numericScale;
     private String columnComment;
     private String columnKey;
 
