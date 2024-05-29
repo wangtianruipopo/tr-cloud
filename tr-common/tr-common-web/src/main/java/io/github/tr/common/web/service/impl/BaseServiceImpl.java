@@ -3,7 +3,6 @@ package io.github.tr.common.web.service.impl;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.extra.spring.EnableSpringUtil;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -47,7 +46,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     BeanUtilsBean beanUtilsBean;
 
     @Override
-    @Transactional
     public void saveEntity(T entity) {
         Serializable key = ModelUtil.getKey(entity);
         CheckEntityResult checkRes = new CheckEntityResult();
@@ -73,7 +71,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     @Override
     @SuppressWarnings("unchecked")
     @SneakyThrows
-    @Transactional
     public T saveEntity(Map<String, Object> entity) {
         // 获取实体类类型
         Class<T> entityType = (Class<T>) ClassUtil.getTypeArgument(this.getClass(), 1);
@@ -88,7 +85,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     @Override
     @SuppressWarnings("unchecked")
     @SneakyThrows
-    @Transactional
     public List<T> saveBatchEntity(List<Map<String, Object>> entityList) {
         // 获取实体类类型
         Class<T> entityType = (Class<T>) ClassUtil.getTypeArgument(this.getClass(), 1);

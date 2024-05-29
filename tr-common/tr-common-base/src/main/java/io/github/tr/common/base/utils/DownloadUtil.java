@@ -1,5 +1,6 @@
 package io.github.tr.common.base.utils;
 
+import cn.hutool.core.io.IoUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -834,7 +835,6 @@ public class DownloadUtil {
                 response.setContentType(v);
             }
         });
-//        response.setContentType("application/octet-stream");
         response.setCharacterEncoding("utf-8");
         try {
             fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
@@ -850,7 +850,7 @@ public class DownloadUtil {
         BufferedInputStream bis = new BufferedInputStream(inputStream);
         try {
             OutputStream os = response.getOutputStream();
-            int i = 0;
+            int i;
             byte[] buffer = new byte[1024];
             while ((i = bis.read(buffer)) != -1) {
                 os.write(buffer, 0, i);
@@ -863,6 +863,7 @@ public class DownloadUtil {
             } catch (IOException e) {
                 log.error("文件流关闭异常!", e);
             }
+            IoUtil.close(inputStream);
         }
     }
 }
